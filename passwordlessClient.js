@@ -6,7 +6,7 @@
  */
 export class PasswordlessClient {
     config = {
-        apiUrl: "https://api.passwordless.dev",
+        apiUrl: "https://api.passwordless.dev/",
         apiKey: "",
         Origin: location.origin,
         RPID: location.hostname
