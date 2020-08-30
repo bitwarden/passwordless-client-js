@@ -49,7 +49,7 @@ On your backend, perform this call:
 ```http
 POST https://api.passwordless.dev/register/token
 ApiSecret: demo:secret:yyy
-{ username: "anders@user.com", displayName: "Anders" } 
+{ "username": "anders@user.com", "displayName": "Anders" } 
 ```
 It will return the token.
 
@@ -84,7 +84,7 @@ On your backend, verify the token from signin with this api call:
 ```http
 POST httsp://api.passwordless.dev/signin/verify
 ApiSecret: demo:secret:yyy
-{ token: "zzz" }
+{ "token": "zzz" }
 ```
 ... where zzz is the token you received from `p.signin(username)`.
 
