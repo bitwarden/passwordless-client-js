@@ -15,7 +15,7 @@ ES6 module:
 
 To create a free account, please perform this http call:
 
-```
+```http
 POST https://api.passwordless.dev/account/create?accountName=YOUR_ACCOUNT&adminEmail=YOUR_EMAIL@EXAMPLE.COM
 ```
 
