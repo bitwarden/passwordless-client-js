@@ -46,8 +46,10 @@ You need to add one backend endpoint to verify that the user is allowed to regis
 
 On your backend, perform this call:
 
-```
-POST https://api.passwordless.dev/register/token { username: "anders@user.com", displayName: "Anders", apiSecret: "demo:secret:yyy" } 
+```http
+POST https://api.passwordless.dev/register/token
+ApiSecret: demo:secret:yyy
+{ username: "anders@user.com", displayName: "Anders" } 
 ```
 It will return the token.
 
@@ -79,8 +81,10 @@ You need to add one backend endpoint to verify the result from the api and set a
 
 On your backend, verify the token from signin with this api call:
 
-```
-POST httsp://api.passwordless.dev/signin/verify { token: "zzz", apiSecret: "demo:secret:yyy" }
+```http
+POST httsp://api.passwordless.dev/signin/verify
+ApiSecret: demo:secret:yyy
+{ token: "zzz" }
 ```
 ... where zzz is the token you received from `p.signin(username)`.
 
