@@ -79,7 +79,8 @@ export class PasswordlessClient {
             }),
             headers: {
                 'Accept': 'application/json',
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'ApiKey': this.config.apiKey
             }
         });
 
@@ -118,7 +119,8 @@ export class PasswordlessClient {
             }),
             headers: {
                 'Accept': 'application/json',
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'ApiKey': this.config.apiKey
             }
         });
 
@@ -177,7 +179,8 @@ export class PasswordlessClient {
                 ...this._params(),
             }),
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'ApiKey': this.config.apiKey
             }
         });
 
@@ -215,7 +218,8 @@ export class PasswordlessClient {
                 ...this._params(),
             }),
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'ApiKey': this.config.apiKey
             }
         });
 
@@ -228,8 +232,7 @@ export class PasswordlessClient {
     _params() {
         return {
             RPID: this.config.RPID,
-            Origin: this.config.Origin,
-            ApiKey: this.config.apiKey
+            Origin: this.config.Origin
         }
     }    
 }
