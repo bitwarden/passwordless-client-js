@@ -4,7 +4,7 @@
  * @export
  * @class PasswordlessClient
  */
-export class PasswordlessClient {
+class PasswordlessClient {
     config = {
         apiUrl: "https://api.passwordless.dev/",
         apiKey: "",
@@ -303,4 +303,3 @@ coerceToBase64Url = function (thing) {
 };
 
 window.GlobalPasswordlessClient = PasswordlessClient;
-export default PasswordlessClient;
