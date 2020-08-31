@@ -9,8 +9,6 @@ ES6 module:
 <script src="https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@master/passwordlessClient.js" type="module"></script>
 ```
 
-(For global, remove type="module" and access the global `window.GlobalPasswordlessClient`).
-
 ## Get API Keys
 
 To create a free account, please perform this http call:
@@ -23,22 +21,25 @@ It will return two keys, one public and one secret. Copy these keys to a secure 
 
 ## Register a webauthn credential to user
 
-```javascript
-async function RegisterPasswordless(e) {
-    e.preventDefault();
+```html
+<script type="module">
+    import PasswordlessClient from "https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@1.0.1/passwordlessClient.js";
+    async function RegisterPasswordless(e) {
+        e.preventDefault();
 
-    var p = new PasswordlessClient({
-        apiKey: "demo:public:xxx"
-    });
+        var p = new PasswordlessClient({
+            apiKey: "demo:public:xxx"
+        });
 
-    var myToken = await (await fetch("/example-backend/passwordless/token")).text();
+        var myToken = await fetch("/example-backend/passwordless/token").then(r => r.text());
 
-    try {
-        await p.register(myToken);
-    } catch (e) {
-        console.error("Things went really bad: ", e);
+        try {
+            await p.register(myToken);
+        } catch (e) {
+            console.error("Things went really bad: ", e);
+        }
     }
-}
+</script>
 ```
 
 Notice the `/example-backend/passwordless/token` call?
@@ -59,24 +60,27 @@ If `await p.register(myToken)` returns sucessfully, the credential has been regi
 
 ## Sign in using webauthn
 
-```javascript
-async function handleSignInSubmit(e) {
-    e.preventDefault();
+```html
+<script type="module">
+    import PasswordlessClient from "https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@1.0.1/passwordlessClient.js";
+    async function handleSignInSubmit(e) {
+        e.preventDefault();
 
-    var p = new PasswordlessClient({
-        apiKey: "demo:public:xxx"
-    });
-    
-    var username = ""; // get username from form
+        var p = new PasswordlessClient({
+            apiKey: "demo:public:xxx"
+        });
 
-    try {
-        var token = await p.signin(username);
-        var verifiedUser = await fetch("/example-backend/signin?token=" + token).then(r => r.json());
-        console.log("User", verifiedUser);
-    } catch (e) {
-        console.error("Things went really bad: ", e);
+        var username = ""; // get username from form
+
+        try {
+            var token = await p.signin(username);
+            var verifiedUser = await fetch("/example-backend/signin?token=" + token).then(r => r.json());
+            console.log("User", verifiedUser);
+        } catch (e) {
+            console.error("Things went really bad: ", e);
+        }
     }
-}
+</script>
 ```
 Notice the `/example-backend/passwordless/token/verify` call?
 You need to add one backend endpoint to verify the result from the api and set auth cookies.
