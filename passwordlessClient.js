@@ -13,6 +13,11 @@ class PasswordlessClient {
     }
     constructor(config) {
         this.config = { ...this.config, ...config }
+
+        // Warn developer that WebAuthn is not supported on http if not localhost
+        if (location.protocol !== "https" && location.hostname !== "localhost") {
+            throw new Error("Passwordless and 'navigator.credentials' is only supported on https or hostname 'localhost'.");
+        }
     }
 
     /**
@@ -93,7 +98,7 @@ class PasswordlessClient {
      * Internal function
      */
     async registerComplete(newCredential, sessionId) {
-        
+
         // Move data into Arrays incase it is super long
         let attestationObject = new Uint8Array(newCredential.response.attestationObject);
         let clientDataJSON = new Uint8Array(newCredential.response.clientDataJSON);
@@ -197,7 +202,7 @@ class PasswordlessClient {
         let clientDataJSON = new Uint8Array(credential.response.clientDataJSON);
         let rawId = new Uint8Array(credential.rawId);
         let sig = new Uint8Array(credential.response.signature);
-        
+
         const data = {
             id: credential.id,
             rawId: coerceToBase64Url(rawId),
@@ -234,7 +239,7 @@ class PasswordlessClient {
             RPID: this.config.RPID,
             Origin: this.config.Origin
         }
-    }    
+    }
 }
 
 coerceToArrayBuffer = function (thing) {
