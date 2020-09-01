@@ -11,10 +11,11 @@ This is what you need to do:
 2. **You add two very simple endpoints on your backend** that integrates to your existing user system (*set cookie, sessions, etc*) (and communicates secrets with our API).
 3. You make a request between your clientside code and the verification endpoints on your backend to verify the registration or sign in.
  
-
-
 ## Get coding
 To get started, add the library to your website (either as ES6 module or global):
+
+Normal script tag:
+<script src="https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@global/passwordlessClient.js"></script>
 
 ES6 module:
 ```html
