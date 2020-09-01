@@ -2,6 +2,18 @@
 
 This library allows you to fast & without complexity add passwordless sign in (using fido2/webauthn) to your web application.
 
+
+## Overview
+
+This is what you need to do:
+
+1. **You add our client side library** and call the function `passwordless.register` or `passwordless.signin`
+2. **You add two very simple endpoints on your backend** that integrates to your existing user system (*set cookie, sessions, etc*) (and communicates secrets with our API).
+3. You make a request between your clientside code and the verification endpoints on your backend to verify the registration or sign in.
+ 
+
+
+## Get coding
 To get started, add the library to your website (either as ES6 module or global):
 
 ES6 module:
@@ -9,9 +21,9 @@ ES6 module:
 <script src="https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@master/passwordlessClient.js" type="module"></script>
 ```
 
-## Get API Keys
+## Get your API Keys
 
-To create a free account, please perform this http call:
+To create a free account, please visit [Create Account](https://beta.passwordless.dev/create-acount) or perform this http call:
 
 ```http
 POST https://api.passwordless.dev/account/create?accountName=YOUR_ACCOUNT&adminEmail=YOUR_EMAIL@EXAMPLE.COM
