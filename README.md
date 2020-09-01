@@ -121,7 +121,7 @@ GET /credentials/list?username=USERNAME
 ApiSecret: demo:secret:yyy
 ```
 
-Response:
+Response 204 No Content or 200 ok:
 ```
 [
     {
@@ -136,7 +136,9 @@ Response:
         "userHandle": "aWlp",
         "userId": null,
         "createdAt": "0001-01-01T00:00:00",
-        "lastUsedAt": "0001-01-01T00:00:00"
+        "lastUsedAt": "0001-01-01T00:00:00",
+        "RPID": "example.com",
+        "Origin": "https://example.com"
     }
 ]
 ```
