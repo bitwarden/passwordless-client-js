@@ -15,6 +15,21 @@ export class PasswordlessClient {
         this.config = { ...this.config, ...config }
     }
 
+    static IsSupported() {
+        if (window.PublicKeyCredential === undefined ||
+            typeof window.PublicKeyCredential !== "function") {
+                return false;
+            }
+
+            return true;
+    }
+
+    CheckSupport() {
+        if(!PasswordlessClient.IsSupported()){
+            throw new Error("WebAuthn and PublicKeyCredentials are not supported on this browser/device");
+        }
+    }
+
     /**
      * Register a new credential to a user
      *
@@ -22,7 +37,7 @@ export class PasswordlessClient {
      * @memberof PasswordlessClient
      */
     async register(token) {
-
+        this.CheckSupport();
         let options;
         let session;
 
@@ -135,7 +150,7 @@ export class PasswordlessClient {
      * @memberof PasswordlessClient
      */
     async signin(username) {
-
+        this.CheckSupport();
         var options, sessionId;
         try {
             ({ data: options, sessionId } = await this.signinBegin(username));
@@ -301,6 +316,3 @@ coerceToBase64Url = function (thing) {
 
     return thing;
 };
-
-window.GlobalPasswordlessClient = PasswordlessClient;
-export default PasswordlessClient;
