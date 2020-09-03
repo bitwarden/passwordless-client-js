@@ -15,12 +15,21 @@ This is what you need to do:
 To get started, add the library to your website (either as ES6 module or global):
 
 Normal script tag:
-<script src="https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@global/passwordlessClient.js"></script>
+```html
+<script src="https://cdn.passwordless.dev/dist/latest/passwordlessclient.min.js"></script>
+```
 
 ES6 module:
 ```html
-<script src="https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@master/passwordlessClient.js" type="module"></script>
+<script src="https://cdn.passwordless.dev/dist/latest/passwordlessclient.min.mjs" type="module"></script>
 ```
+
+UMD module:
+```
+https://cdn.passwordless.dev/dist/latest/passwordlessclient.umd.min.js
+```
+
+NPM package coming soon.
 
 ## Get your API Keys
 
