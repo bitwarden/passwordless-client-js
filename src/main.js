@@ -15,7 +15,14 @@ export class PasswordlessClient {
         this.config = { ...this.config, ...config }
     }
 
-    static IsSupported() {
+    /**
+    * Returns true if the device has builtin "platform" authenticator (Windows Hello/faceid/fingerprint etc)
+    */
+    static async isEnabledOnDevice() {
+        return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    }
+
+    static isSupportedByBrowser() {
         if (window.PublicKeyCredential === undefined ||
             typeof window.PublicKeyCredential !== "function") {
                 return false;
@@ -25,10 +32,11 @@ export class PasswordlessClient {
     }
 
     CheckSupport() {
-        if(!PasswordlessClient.IsSupported()){
+        if(!PasswordlessClient.isSupportedByBrowser()){
             throw new Error("WebAuthn and PublicKeyCredentials are not supported on this browser/device");
         }
     }
+    
 
     /**
      * Register a new credential to a user

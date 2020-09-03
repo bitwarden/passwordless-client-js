@@ -185,3 +185,8 @@ After 14 days your data will be permanently deleted.
 POST /account/delete
 ApiSecret: demo:secret:yyy
 ```
+
+
+# Build this library
+
+Run `rollup -c`
