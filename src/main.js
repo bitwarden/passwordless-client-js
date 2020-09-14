@@ -252,9 +252,8 @@ class PasswordlessClient {
         }
     }
 
-
     /**
-     * Returns true if device has been used for passwordless signin before. False-negatives can occure since informatino is stored in cookies.
+     * Returns true if device has been used for passwordless signin before. Treat information as hint and not a fact. False-negatives can happen since information is stored in cookies.
      */
     hasPasswordlessHint() {
         if (this.config.useHints === "cookie") {
@@ -277,6 +276,9 @@ export async function isPlatformSupported() {
     return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
 }
 
+/**
+ * Returns true if the browser supports PublicKeyCredential
+ */
 export function isBrowserSupported() {
     if (window.PublicKeyCredential === undefined ||
         typeof window.PublicKeyCredential !== "function") {
@@ -286,6 +288,9 @@ export function isBrowserSupported() {
     return true;
 }
 
+/**
+ * Throws if browser does not support PublicKeyCredential
+ */
 function checkSupport() {
     if (!isBrowserSupported()) {
         throw new Error("WebAuthn and PublicKeyCredentials are not supported on this browser/device");
