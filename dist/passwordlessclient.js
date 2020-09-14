@@ -12,34 +12,12 @@ var Passwordless = (function (exports) {
             apiUrl: "https://api.passwordless.dev/",
             apiKey: "",
             Origin: location.origin,
-            RPID: location.hostname
+            RPID: location.hostname,
+            useHints: "cookie"
         }
         constructor(config) {
             this.config = { ...this.config, ...config };
         }
-
-        /**
-        * Returns true if the device has builtin "platform" authenticator (Windows Hello/faceid/fingerprint etc)
-        */
-        static async isEnabledOnDevice() {
-            return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-        }
-
-        static isSupportedByBrowser() {
-            if (window.PublicKeyCredential === undefined ||
-                typeof window.PublicKeyCredential !== "function") {
-                    return false;
-                }
-
-                return true;
-        }
-
-        CheckSupport() {
-            if(!PasswordlessClient.isSupportedByBrowser()){
-                throw new Error("WebAuthn and PublicKeyCredentials are not supported on this browser/device");
-            }
-        }
-        
 
         /**
          * Register a new credential to a user
@@ -48,7 +26,7 @@ var Passwordless = (function (exports) {
          * @memberof PasswordlessClient
          */
         async register(token) {
-            this.CheckSupport();
+            checkSupport();
             let options;
             let session;
 
@@ -88,6 +66,7 @@ var Passwordless = (function (exports) {
 
             try {
                 await this.registerComplete(newCredential, session);
+                this.setHint("hint-passwordless");
             } catch (e) {
                 console.warn("Failed during register/complete", e);
             }
@@ -119,7 +98,7 @@ var Passwordless = (function (exports) {
          * Internal function
          */
         async registerComplete(newCredential, sessionId) {
-            
+
             // Move data into Arrays incase it is super long
             let attestationObject = new Uint8Array(newCredential.response.attestationObject);
             let clientDataJSON = new Uint8Array(newCredential.response.clientDataJSON);
@@ -150,6 +129,10 @@ var Passwordless = (function (exports) {
                 }
             });
 
+            if (response.status === 200) {
+                this.setHint("hint-passwordless");
+            }
+
             return await response.json();
         }
 
@@ -161,7 +144,7 @@ var Passwordless = (function (exports) {
          * @memberof PasswordlessClient
          */
         async signin(username) {
-            this.CheckSupport();
+            checkSupport();
             var options, sessionId;
             try {
                 ({ data: options, sessionId } = await this.signinBegin(username));
@@ -223,7 +206,7 @@ var Passwordless = (function (exports) {
             let clientDataJSON = new Uint8Array(credential.response.clientDataJSON);
             let rawId = new Uint8Array(credential.rawId);
             let sig = new Uint8Array(credential.response.signature);
-            
+
             const data = {
                 id: credential.id,
                 rawId: coerceToBase64Url(rawId),
@@ -236,7 +219,7 @@ var Passwordless = (function (exports) {
                 }
             };
 
-            var res = await fetch(this.config.apiUrl + "signin/complete", {
+            var response = await fetch(this.config.apiUrl + "signin/complete", {
                 method: 'POST',
                 body: JSON.stringify({
                     response: data,
@@ -249,7 +232,11 @@ var Passwordless = (function (exports) {
                 }
             });
 
-            return await res.json();
+            if (response.status === 200) {
+                this.setHint("hint-passwordless");
+            }
+
+            return await response.json();
         }
 
         /**
@@ -260,10 +247,53 @@ var Passwordless = (function (exports) {
                 RPID: this.config.RPID,
                 Origin: this.config.Origin
             }
-        }    
+        }
+
+        setHint(hint) {
+            if (this.config.useHints === "cookie") {
+                setCookie(hint, "1", 365);
+            }
+        }
+
+
+        /**
+         * Returns true if device has been used for passwordless signin before. False-negatives can occure since informatino is stored in cookies.
+         */
+        hasPasswordlessHint() {
+            if (this.config.useHints === "cookie") {
+                return getCookie("hint-passwordless") === "1";
+            }
+        }
     }
 
-    coerceToArrayBuffer = function (thing) {
+
+    /**
+    * Returns true if the device has builtin "platform" authenticator (Windows Hello/faceid/fingerprint etc)
+    */
+    async function isPlatformSupported() {
+        if (!isBrowserSupported()) {
+            return false;
+        }
+
+        return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    }
+
+    function isBrowserSupported() {
+        if (window.PublicKeyCredential === undefined ||
+            typeof window.PublicKeyCredential !== "function") {
+            return false;
+        }
+
+        return true;
+    }
+
+    function checkSupport() {
+        if (!isBrowserSupported()) {
+            throw new Error("WebAuthn and PublicKeyCredentials are not supported on this browser/device");
+        }
+    }
+
+    const coerceToArrayBuffer = function (thing) {
         if (typeof thing === "string") {
             // base64url to base64
             thing = thing.replace(/-/g, "+").replace(/_/g, "/");
@@ -295,8 +325,7 @@ var Passwordless = (function (exports) {
         return thing;
     };
 
-
-    coerceToBase64Url = function (thing) {
+    const coerceToBase64Url = function (thing) {
         // Array or ArrayBuffer to Uint8Array
         if (Array.isArray(thing)) {
             thing = Uint8Array.from(thing);
@@ -328,7 +357,21 @@ var Passwordless = (function (exports) {
         return thing;
     };
 
-    exports.PasswordlessClient = PasswordlessClient;
+    const setCookie = (name, value, days = 7, path = '/') => {
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path;
+    };
+
+    const getCookie = (name) => {
+        return document.cookie.split('; ').reduce((r, v) => {
+            const parts = v.split('=');
+            return parts[0] === name ? decodeURIComponent(parts[1]) : r
+        }, '')
+    };
+
+    exports.Client = PasswordlessClient;
+    exports.isBrowserSupported = isBrowserSupported;
+    exports.isPlatformSupported = isPlatformSupported;
 
     return exports;
 
