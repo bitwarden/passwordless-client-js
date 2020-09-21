@@ -110,7 +110,7 @@ You need to add one backend endpoint to verify the result from the api and set a
 On your backend, verify the token from signin with this api call:
 
 ```http
-POST httsp://api.passwordless.dev/signin/verify
+POST https://api.passwordless.dev/signin/verify
 ApiSecret: demo:secret:yyy
 Content-Type: application/json
 
