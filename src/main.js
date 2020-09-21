@@ -10,7 +10,6 @@ class PasswordlessClient {
     apiKey: "",
     Origin: location.origin,
     RPID: location.hostname,
-    useHints: "cookie",
   };
   constructor(config) {
     this.config = { ...this.config, ...config };
@@ -64,7 +63,6 @@ class PasswordlessClient {
 
     try {
       await this.registerComplete(newCredential, session);
-      this.setHint("hint-passwordless");
     } catch (e) {
       console.warn("Failed during register/complete", e);
     }
@@ -128,10 +126,6 @@ class PasswordlessClient {
         ApiKey: this.config.apiKey,
       },
     });
-
-    if (response.status === 200) {
-      this.setHint("hint-passwordless");
-    }
 
     return await response.json();
   }
@@ -230,10 +224,6 @@ class PasswordlessClient {
       },
     });
 
-    if (response.status === 200) {
-      this.setHint("hint-passwordless");
-    }
-
     return await response.json();
   }
 
@@ -245,21 +235,6 @@ class PasswordlessClient {
       RPID: this.config.RPID,
       Origin: this.config.Origin,
     };
-  }
-
-  setHint(hint) {
-    if (this.config.useHints === "cookie") {
-      setCookie(hint, "1", 365);
-    }
-  }
-
-  /**
-   * Returns true if device has been used for passwordless signin before. Treat information as hint and not a fact. False-negatives can happen since information is stored in cookies.
-   */
-  hasPasswordlessHint() {
-    if (this.config.useHints === "cookie") {
-      return getCookie("hint-passwordless") === "1";
-    }
   }
 }
 
@@ -363,27 +338,4 @@ const coerceToBase64Url = function (thing) {
   thing = thing.replace(/\+/g, "-").replace(/\//g, "_").replace(/=*$/g, "");
 
   return thing;
-};
-
-const setCookie = (name, value, days = 7, path = "/") => {
-  const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie =
-    name +
-    "=" +
-    encodeURIComponent(value) +
-    "; expires=" +
-    expires +
-    "; path=" +
-    path;
-};
-
-const getCookie = (name) => {
-  return document.cookie.split("; ").reduce((r, v) => {
-    const parts = v.split("=");
-    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-  }, "");
-};
-
-const deleteCookie = (name, path) => {
-  setCookie(name, "", -1, path);
 };

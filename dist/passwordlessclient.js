@@ -233,10 +233,6 @@ var Passwordless = (function (exports) {
         },
       });
 
-      if (response.status === 200) {
-        this.setHint("hint-passwordless");
-      }
-
       return await response.json();
     }
 
@@ -253,15 +249,6 @@ var Passwordless = (function (exports) {
     setHint(hint) {
       if (this.config.useHints === "cookie") {
         setCookie(hint, "1", 365);
-      }
-    }
-
-    /**
-     * Returns true if device has been used for passwordless signin before. Treat information as hint and not a fact. False-negatives can happen since information is stored in cookies.
-     */
-    hasPasswordlessHint() {
-      if (this.config.useHints === "cookie") {
-        return getCookie("hint-passwordless") === "1";
       }
     }
   }
