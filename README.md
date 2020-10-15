@@ -42,7 +42,7 @@ NPM package coming soon.
 
 ## Get your API Keys
 
-To create a free account, please visit [Create Account](https://beta.passwordless.dev/create-acount) or perform this http call:
+To create a free account, please visit [Create Account](https://beta.passwordless.dev/create-account) or perform this http call:
 
 ```http
 POST https://api.passwordless.dev/account/create?accountName=YOUR_ACCOUNT&adminEmail=YOUR_EMAIL@EXAMPLE.COM
