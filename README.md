@@ -16,17 +16,26 @@ To get started, add the library to your website (either as ES6 module or global)
 
 Normal script tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/latest/passwordlessclient.min.js"></script>
+<script src="https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.js" integrity="sha384-TPor6eIWM4IefSReNrio8zR0tr3LIHYNSwlSNKArZo42TEWTmByjkkJm/vvnUxxv" crossorigin="anonymous"></script>
+
+<script>
+var p = new Passwordless.Client({});
+</script>
+```
+
+ES6 module script-tag:
+```html
+<script src="https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.mjs" integrity="sha384-fE4M8MiZ1Ps1XtxCO4qB4m6Z9Lj9N7HRpe8IAajQSDFC9g7mBeVeQH2sC99fvBva" crossorigin="anonymous"></script>
 ```
 
 ES6 module:
-```html
-<script src="https://cdn.passwordless.dev/dist/latest/passwordlessclient.min.mjs" type="module"></script>
+```js
+import { Client } from "https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.mjs"
 ```
 
 UMD module:
 ```
-https://cdn.passwordless.dev/dist/latest/passwordlessclient.umd.min.js
+https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.umd.min.js
 ```
 
 NPM package coming soon.
@@ -45,11 +54,11 @@ It will return two keys, one public and one secret. Copy these keys to a secure 
 
 ```html
 <script type="module">
-    import PasswordlessClient from "https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@1.0.1/passwordlessClient.js";
+    import { Client } from "https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.mjs";
     async function RegisterPasswordless(e) {
         e.preventDefault();
 
-        var p = new PasswordlessClient({
+        var p = new Client({
             apiKey: "demo:public:xxx"
         });
 
@@ -84,11 +93,11 @@ If `await p.register(myToken)` returns sucessfully, the credential has been regi
 
 ```html
 <script type="module">
-    import PasswordlessClient from "https://cdn.jsdelivr.net/gh/passwordless/passwordless-client-js@1.0.1/passwordlessClient.js";
+    import { Client } from "https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.mjs";
     async function handleSignInSubmit(e) {
         e.preventDefault();
 
-        var p = new PasswordlessClient({
+        var p = new Client({
             apiKey: "demo:public:xxx"
         });
 
