@@ -2,14 +2,16 @@
 
 This library allows you to fast & without complexity add passwordless sign in (using fido2/webauthn) to your web application.
 
+[Read the paswordless documentation](https://docs.passwordless.dev/)
 
 ## Overview
 
 This is what you need to do:
 
-1. **You add our client side library** and call the function `passwordless.register` or `passwordless.signin`
-2. **You add two very simple endpoints on your backend** that integrates to your existing user system (*set cookie, sessions, etc*) (and communicates secrets with our API).
-3. You make a request between your clientside code and the verification endpoints on your backend to verify the registration or sign in.
+1. [Read the docs](https://docs.passwordless.dev/)
+3. **You add our client side library** and call the function `passwordless.register` or `passwordless.signin`
+4. **You add two very simple endpoints on your backend** that integrates to your existing user system (*set cookie, sessions, etc*) (and communicates secrets with our API).
+5. You make a request between your clientside code and the verification endpoints on your backend to verify the registration or sign in.
  
 ## Get coding
 To get started, add the library to your website (either as ES6 module or global):
@@ -138,72 +140,6 @@ The API call will return information about the user sign in:
    "origin":"https://example.com"
 }
 ```
-
-## Backend API endpoints
-
-When you've implemented register & sign in, you might want to manage keys or your account which is also done by API.
-
-## List Credentials for user
-
-List all credentials for a certain username
-
-```http
-GET /credentials/list?username=USERNAME
-ApiSecret: demo:secret:yyy
-```
-
-Response 204 No Content or 200 ok:
-```
-[
-    {
-        "aaGuid": "00000000-0000-0000-0000-000000000000",
-        "credType": "none",
-        "descriptor": {
-            "id": "rhrZguMM_yiMA-LVquCkUdGELeCoweSdwI_PaU9cq7U",
-            "type": "public-key"
-        },
-        "publicKey": "pAEDAzkBACBZAQDEB/aDgUQ1uHMXNmYYqJAxPJYOx9uS3eC5U1B4zE3PUoED1Z5k2PdFr5huW/KruuwZCY9FYmJf5xUc/z0WUF6ENZL0rzM3aQ+OeYW13lVR0t7tyzLd4ZDOLu4jSdxgqkbxA333lbR4SCiqNQrw5KkB88mqumodWsF/J+1IyY523UR4iR7J/4jLhNTEcmsO8FFc82konW+7U5LpujqMgQBkM+WreclCrm4L5QtIqMabW9KD31FLKwm5OryAmTBWd+XP1nsIae2X6wqVg9HVOGM0hkcu5WphA4/6VZTZM90JWavNPpZHmnnG62UkiXBR45Ncmx1HEKdptT3GwXwwiY9hIUMBAAE=",
-        "signatureCounter": 1,
-        "userHandle": "aWlp",
-        "userId": null,
-        "createdAt": "0001-01-01T00:00:00",
-        "lastUsedAt": "0001-01-01T00:00:00",
-        "RPID": "example.com",
-        "Origin": "https://example.com"
-    }
-]
-```
-
-### Delete credentials for user
-
-Delete a certain credential for a user
-
-```http
-POST /credentials/delete
-ApiSecret: demo:secret:yyy
-Content-Type: application/json
-
-{    
-    "CredentialId":"vUZudaBNjzJWf-POrGxsso6ztQ3HQ5C6Aef_T-qnKwzEhfqYXQfvuPuPvC09_6IcSfQYdE130s4rU1zqXVlOkw"
-}
-```
-
-Returns 200 OK
-
-### Delete your account at passwordless.dev
-
-If you want to delete your account and all data stored.
-
-**Please note: This will not delete your data immediately.**
-All admin emails connected to the account will receive a warning email with a link to abort the deletion process.
-After 24 hours your API keys will be frozen.
-After 14 days your data will be permanently deleted.
-
-```
-POST /account/delete
-ApiSecret: demo:secret:yyy
-```
-
 
 # Build this library
 
