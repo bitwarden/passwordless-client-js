@@ -46,11 +46,13 @@ class PasswordlessClient {
     // Turn ID into a UInt8Array Buffer for some reason
     fidoOptions.user.id = coerceToArrayBuffer(fidoOptions.user.id);
 
+    // TODO(fant): why is this here? Is this what's showing an error when someone tries to register a key that's already been registered?
     fidoOptions.excludeCredentials = fidoOptions.excludeCredentials.map((c) => {
       c.id = coerceToArrayBuffer(c.id);
       return c;
     });
 
+    // TODO(fant): is this needed?
     if (fidoOptions.authenticatorSelection.authenticatorAttachment === null)
       fidoOptions.authenticatorSelection.authenticatorAttachment = undefined;
 
