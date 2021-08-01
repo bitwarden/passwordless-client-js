@@ -102,11 +102,11 @@ export class Client {
 
   /**
    * Sign in a user using the userid
-   * @param {string} userid 
+   * @param {string} userId 
    * @returns 
    */
-  public async signinWithID(userid: string): Promise<unknown> {
-    return this.signin({userId:userid})
+  public async signinWithId(userId: string): Promise<string> {
+    return this.signin({userId})
   }
 
   /**
@@ -114,8 +114,8 @@ export class Client {
    * @param {string} alias 
    * @returns 
    */
-  public async signinWithAlias(alias: string): Promise<unknown> {
-    return this.signin({alias: alias})
+  public async signinWithAlias(alias: string): Promise<string> {
+    return this.signin({alias})
   }
 
   /**
@@ -124,11 +124,11 @@ export class Client {
    * @param {SigninMethod} Object containing either UserID or Alias
    * @returns
    */
-  public async signin(method: SigninMethod): Promise<unknown> {
+  private async signin(signinMethod: SigninMethod): Promise<string> {
     this.assertBrowserSupported();
 
     try {
-      const signin = await this.signinBegin(method);
+      const signin = await this.signinBegin(signinMethod);
 
       signin.data.challenge = this.coerceToArrayBuffer(signin.data.challenge);
       signin.data.allowCredentials?.forEach((cred) => {
@@ -141,19 +141,20 @@ export class Client {
 
       const response = await this.signinComplete(credential, signin.sessionId);
       console.log(response);
-      return response;
+      return response.data;
     } catch (error) {
       console.error(error);
       throw new Error(`Passwordless signin failed: ${error.message}`);
     }
   }
 
-  private async signinBegin(signInData: SigninMethod): Promise<SigninBeginResponse> {
+  private async signinBegin(signinMethod: SigninMethod): Promise<SigninBeginResponse> {
     const response = await fetch(`${this.config.apiUrl}/signin/begin`, {
       method: 'POST',
       headers: this.createHeaders(),
       body: JSON.stringify({
-        ...signInData,
+        userId: "userId" in signinMethod ? signinMethod.userId : undefined,
+        alias: "alias" in signinMethod ? signinMethod.alias : undefined,
         RPID: this.config.rpid,
         Origin: this.config.origin,
       }),
