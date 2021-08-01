@@ -1,31 +1,42 @@
 import {terser} from 'rollup-plugin-terser';
+import typescript from '@rollup/plugin-typescript';
+
+const createPlugins = (compact) => compact
+  ? [terser()]
+  : [];
 
 const iife = (compact) => ({
-  file: `dist/passwordlessclient${compact ? ".min" : ""}.js`,
-  format: "iife",
-  name: "Passwordless",
+  file: `dist/passwordless.iife${compact ? '.min' : ''}.js`,
+  format: 'iife',
+  name: 'Passwordless',
   sourcemap: true,
-  plugins: compact ? [terser()] : []
+  plugins: createPlugins(compact),
 });
 
 const es6 = (compact) => ({
-  file: `dist/passwordlessclient${compact ? ".min" : ""}.mjs`,
-  format: "es",
+  file: `dist/passwordless${compact ? '.min' : ''}.mjs`,
+  format: 'es',
   sourcemap: true,
-  plugins: compact ? [terser()] : []
+  plugins: createPlugins(compact),
 });
 
 const umd = (compact) => ({
-    file: `dist/passwordlessclient.umd${compact ? ".min" : ""}.js`,
-    format: "umd",
-    name: "Passwordless",
-    plugins: compact ? [terser()] : []
-  });
+  file: `dist/passwordless.umd${compact ? '.min' : ''}.js`,
+  format: 'umd',
+  name: 'Passwordless',
+  plugins: createPlugins(compact),
+});
 
-  console.log(iife(false));
+const cjs = (compact) => ({
+  file: `dist/passwordless${compact ? '.min' : ''}.js`,
+  format: 'cjs',
+  name: 'Passwordless',
+  plugins: createPlugins(compact),
+});
 
 export default {
-  input: "src/main.js",
+  input: 'src/passwordless.ts',
+  plugins: [typescript()],
   output: [
     iife(false),
     iife(true),
@@ -33,5 +44,7 @@ export default {
     es6(true),
     umd(false),
     umd(true),
+    cjs(false),
+    cjs(true),
   ],
 };
