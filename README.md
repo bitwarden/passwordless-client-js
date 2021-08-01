@@ -16,6 +16,15 @@ This is what you need to do:
 ## Get coding
 To get started, add the library to your website (either as ES6 module or global):
 
+NPM package:
+```bash
+yarn add passwordless-client-js
+```
+
+```js
+import { Client } from 'passwordless-client-js';
+```
+
 Normal script tag:
 ```html
 <script src="https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.js" integrity="sha384-TPor6eIWM4IefSReNrio8zR0tr3LIHYNSwlSNKArZo42TEWTmByjkkJm/vvnUxxv" crossorigin="anonymous"></script>
@@ -57,7 +66,7 @@ It will return two keys, one public and one secret. Copy these keys to a secure 
 ```html
 <script type="module">
     import { Client } from "https://cdn.passwordless.dev/dist/0.0.1/passwordlessclient.min.mjs";
-    async function RegisterPasswordless(e) {
+    async function registerPasswordless(e) {
         e.preventDefault();
 
         var p = new Client({
