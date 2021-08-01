@@ -8,7 +8,7 @@ const createPlugins = (compact) => compact
 const iife = (compact) => ({
   file: `dist/passwordless.iife${compact ? '.min' : ''}.js`,
   format: 'iife',
-  name: 'passwordless',
+  name: 'Passwordless',
   sourcemap: true,
   plugins: createPlugins(compact),
 });
