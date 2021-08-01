@@ -1,4 +1,10 @@
 {
+  "name": "passwordless-client-js",
+  "version": "0.0.1",
+  "main": "build/client.js",
+  "types": "build/client.d.ts",
+  "repository": "https://github.com/passwordless/passwordless-client-js",
+  "author": "David Fant <david@fant.io>",
   "devDependencies": {
     "typescript": "^4.3.5"
   }
