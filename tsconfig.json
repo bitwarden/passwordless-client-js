@@ -3,7 +3,7 @@
     "declaration": true,
     "strict": true,
     "target": "es2018",
-    "module": "commonjs",
+    "module": "esnext",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "experimentalDecorators": true,
@@ -11,8 +11,8 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
-    "outDir": "build"
+    "rootDir": "src",
+    "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["**/*.ts"]
 }

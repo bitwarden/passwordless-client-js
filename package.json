@@ -1,11 +1,20 @@
 {
   "name": "passwordless-client-js",
   "version": "0.0.1",
-  "main": "build/client.js",
-  "types": "build/client.d.ts",
+  "main": "dist/passwordless.js",
+  "types": "dist/passwordless.d.ts",
   "repository": "https://github.com/passwordless/passwordless-client-js",
   "author": "David Fant <david@fant.io>",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.5",
+    "rollup": "^2.55.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.3.0",
     "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "rm -rf dist && tsc && rollup -c",
+    "prepare": "yarn build"
   }
 }

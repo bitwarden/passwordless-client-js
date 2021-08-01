@@ -152,4 +152,4 @@ The API call will return information about the user sign in:
 
 # Build this library
 
-Run `rollup -c`
+Run `yarn build`
