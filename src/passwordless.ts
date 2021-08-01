@@ -1,4 +1,4 @@
-import { AtLeast, RegisterBeginResponse, RegisterCompleteResponse, SigninBeginResponse, SigninCompleteResponse } from './types';
+import { AtLeast, RegisterBeginResponse, RegisterCompleteResponse, SigninBeginResponse, SigninCompleteResponse, SigninMethod } from './types';
 
 export interface Config {
   apiUrl: string;
@@ -9,7 +9,7 @@ export interface Config {
 
 export class Client {
   private config: Config = {
-    apiUrl: 'https://api.passwordless.dev',
+    apiUrl: 'https://apiv2.passwordless.dev',
     apiKey: '',
     origin: window.location.origin,
     rpid: window.location.hostname,
@@ -101,16 +101,34 @@ export class Client {
   }
 
   /**
+   * Sign in a user using the userid
+   * @param {string} userid 
+   * @returns 
+   */
+  public async signinWithID(userid: string): Promise<unknown> {
+    return this.signin({userId:userid})
+  }
+
+  /**
+   * Sign in a user using an alias
+   * @param {string} alias 
+   * @returns 
+   */
+  public async signinWithAlias(alias: string): Promise<unknown> {
+    return this.signin({alias: alias})
+  }
+
+  /**
    * Sign in a user
    *
-   * @param {string} username
+   * @param {SigninMethod} Object containing either UserID or Alias
    * @returns
    */
-  public async signin(username: string): Promise<unknown> {
+  public async signin(method: SigninMethod): Promise<unknown> {
     this.assertBrowserSupported();
 
     try {
-      const signin = await this.signinBegin(username);
+      const signin = await this.signinBegin(method);
 
       signin.data.challenge = this.coerceToArrayBuffer(signin.data.challenge);
       signin.data.allowCredentials?.forEach((cred) => {
@@ -130,12 +148,12 @@ export class Client {
     }
   }
 
-  private async signinBegin(username: string): Promise<SigninBeginResponse> {
+  private async signinBegin(signInData: SigninMethod): Promise<SigninBeginResponse> {
     const response = await fetch(`${this.config.apiUrl}/signin/begin`, {
       method: 'POST',
       headers: this.createHeaders(),
       body: JSON.stringify({
-        username,
+        ...signInData,
         RPID: this.config.rpid,
         Origin: this.config.origin,
       }),

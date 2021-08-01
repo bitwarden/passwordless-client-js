@@ -1,6 +1,11 @@
 
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
+export interface SigninMethod {
+  userId?: string;
+  alias?: string;
+}
+
 export interface RegisterBeginResponse {
   sessionId: string;
   data: PublicKeyCredentialCreationOptions;
