@@ -27,7 +27,7 @@ import { Client } from 'passwordless-client-js';
 
 Normal script tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.iife.min.js" integrity="Qhz9YKzklMqHMn2W9sQhZBT9M+f1VpWAzqzjZ/SjWrnRq4+DclsMc8CdS8sz+rW5" crossorigin="anonymous"></script>
+<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.iife.min.js" crossorigin="anonymous"></script>
 
 <script>
 var p = new Passwordless.Client({});
@@ -36,7 +36,7 @@ var p = new Passwordless.Client({});
 
 ES6 module script-tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.min.mjs" integrity="sha384-fE4M8MiZ1Ps1XtxCO4qB4m6Z9Lj9N7HRpe8IAajQSDFC9g7mBeVeQH2sC99fvBva" crossorigin="anonymous"></script>
+<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.min.mjs" crossorigin="anonymous"></script>
 ```
 
 ES6 module:
