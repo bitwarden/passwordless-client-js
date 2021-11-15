@@ -119,6 +119,15 @@ export class Client {
   }
 
   /**
+   * Sign in using discoverable credentials (no userid/alias needed).
+   * @param {string} alias 
+   * @returns 
+   */
+   public async signinWithDiscoverable(): Promise<string> {
+    return this.signin({discoverable: true})
+  }
+
+  /**
    * Sign in a user
    *
    * @param {SigninMethod} Object containing either UserID or Alias
@@ -126,6 +135,8 @@ export class Client {
    */
   private async signin(signinMethod: SigninMethod): Promise<string> {
     this.assertBrowserSupported();
+
+    signinMethod = signinMethod || {};
 
     try {
       const signin = await this.signinBegin(signinMethod);
