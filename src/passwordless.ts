@@ -140,7 +140,6 @@ export class Client {
       }) as PublicKeyCredential;
 
       const response = await this.signinComplete(credential, signin.sessionId);
-      console.log(response);
       return response.data;
     } catch (error) {
       console.error(error);

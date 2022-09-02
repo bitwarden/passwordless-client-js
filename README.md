@@ -27,7 +27,7 @@ import { Client } from 'passwordless-client-js';
 
 Normal script tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.iife.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordless.iife.min.js" crossorigin="anonymous"></script>
 
 <script>
 var p = new Passwordless.Client({});
@@ -36,17 +36,17 @@ var p = new Passwordless.Client({});
 
 ES6 module script-tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.min.mjs" crossorigin="anonymous"></script>
+<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordless.min.mjs" crossorigin="anonymous"></script>
 ```
 
 ES6 module:
 ```js
-import { Client } from "https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.min.mjs"
+import { Client } from "https://cdn.passwordless.dev/dist/0.2.0/passwordless.min.mjs"
 ```
 
 UMD module:
 ```
-https://cdn.passwordless.dev/dist/0.2.0/passwordlessclient.umd.min.js
+https://cdn.passwordless.dev/dist/0.2.0/passwordless.umd.min.js
 ```
 
 # Build this library
