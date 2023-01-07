@@ -45,7 +45,7 @@ export class Client {
       }
 
       await this.registerComplete(credential, registration.sessionId, credentialNickname);
-    } catch (error) {
+    } catch (error:any) {
       console.error(error);
       throw new Error(`Passwordless register failed: ${error.message}`);
     }
@@ -141,7 +141,7 @@ export class Client {
 
       const response = await this.signinComplete(credential, signin.sessionId);
       return response.data;
-    } catch (error) {
+    } catch (error:any) {
       console.error(error);
       throw new Error(`Passwordless signin failed: ${error.message}`);
     }
