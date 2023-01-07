@@ -1,6 +1,6 @@
 {
   "name": "@passwordlessdev/passwordless-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dist/passwordless.js",
   "types": "dist/passwordless.d.ts",
   "repository": {

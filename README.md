@@ -18,16 +18,16 @@ To get started, add the library to your website (either as ES6 module or global)
 
 NPM package:
 ```bash
-yarn add passwordless-client-js
+yarn add @passwordlessdev/passwordless-client
 ```
 
 ```js
-import { Client } from 'passwordless-client-js';
+import { Client } from '@passwordlessdev/passwordless-client';
 ```
 
 Normal script tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordless.iife.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.passwordless.dev/dist/0.3.0/passwordless.iife.min.js" crossorigin="anonymous"></script>
 
 <script>
 var p = new Passwordless.Client({});
@@ -36,17 +36,17 @@ var p = new Passwordless.Client({});
 
 ES6 module script-tag:
 ```html
-<script src="https://cdn.passwordless.dev/dist/0.2.0/passwordless.min.mjs" crossorigin="anonymous"></script>
+<script src="https://cdn.passwordless.dev/dist/0.3.0/passwordless.min.mjs" crossorigin="anonymous"></script>
 ```
 
 ES6 module:
 ```js
-import { Client } from "https://cdn.passwordless.dev/dist/0.2.0/passwordless.min.mjs"
+import { Client } from "https://cdn.passwordless.dev/dist/0.3.0/passwordless.min.mjs"
 ```
 
 UMD module:
 ```
-https://cdn.passwordless.dev/dist/0.2.0/passwordless.umd.min.js
+https://cdn.passwordless.dev/dist/0.3.0/passwordless.umd.min.js
 ```
 
 # Build this library
