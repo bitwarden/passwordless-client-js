@@ -9,7 +9,7 @@ export interface Config {
 
 export class Client {
   private config: Config = {
-    apiUrl: 'https://apiv2.passwordless.dev',
+    apiUrl: 'https://v3.passwordless.dev',
     apiKey: '',
     origin: window.location.origin,
     rpid: window.location.hostname,
