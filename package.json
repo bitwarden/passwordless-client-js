@@ -1,12 +1,14 @@
 {
   "name": "@passwordlessdev/passwordless-client",
-  "version": "0.3.0",
-  "main": "dist/passwordless.js",
+  "version": "0.3.1",
+  "main": "dist/passwordless.mjs",
   "types": "dist/passwordless.d.ts",
+  "type": "module",
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/passwordless/passwordless-client-js.git"
-  },  
+  },
   "contributors": [
     "Anders Åberg",
     "David Fant"
