@@ -120,14 +120,14 @@ export class Client {
   }
 
   /**
-   * Sign in a user using conditional sign in
+   * Sign in a user using autofill UI (a.k.a conditional) sign in
    * @returns a verify_token
    */
-  async signinWithConditional(): Promise<string> {
-    if (!await isConditionalSupported()) {
-      throw new Error("Conditional authentication is not supported in this browser");
+  async signinWithAutofill(): Promise<string> {
+    if (!await isAutofillSupported()) {
+      throw new Error("Autofill authentication (conditional meditation) is not supported in this browser");
     }
-    return this.signin({ conditional: true });
+    return this.signin({ autofill: true });
   }
 
   /**
@@ -150,7 +150,7 @@ export class Client {
 
       const credential = await navigator.credentials.get({
         publicKey: signin.data,
-        mediation: 'conditional' in signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditational' yet
+        mediation: 'autofill' in signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditational' yet
         signal: this.abortController.signal,
       }) as PublicKeyCredential;
 
@@ -289,7 +289,7 @@ export function isBrowserSupported(): boolean {
   return window.PublicKeyCredential !== undefined && typeof window.PublicKeyCredential === 'function';
 }
 
-export async function isConditionalSupported(): Promise<boolean> {
+export async function isAutofillSupported(): Promise<boolean> {
   const PublicKeyCredential = window.PublicKeyCredential as any; // Typescript lacks support for this
   if(!PublicKeyCredential.isConditionalMediationAvailable) return false;
   return PublicKeyCredential.isConditionalMediationAvailable() as Promise<boolean>;
