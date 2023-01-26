@@ -14,6 +14,7 @@ export class Client {
     origin: window.location.origin,
     rpid: window.location.hostname,
   }
+  private abortController: AbortController = new AbortController();
 
   constructor(config: AtLeast<Config, 'apiKey'>) {
     Object.assign(this.config, config);
@@ -112,10 +113,21 @@ export class Client {
   /**
    * Sign in a user using an alias
    * @param {string} alias 
-   * @returns 
+   * @returns a verify_token
    */
   public async signinWithAlias(alias: string): Promise<string> {
     return this.signin({alias})
+  }
+
+  /**
+   * Sign in a user using autofill UI (a.k.a conditional) sign in
+   * @returns a verify_token
+   */
+  async signinWithAutofill(): Promise<string> {
+    if (!await isAutofillSupported()) {
+      throw new Error("Autofill authentication (conditional meditation) is not supported in this browser");
+    }
+    return this.signin({ autofill: true });
   }
 
   /**
@@ -126,6 +138,7 @@ export class Client {
    */
   private async signin(signinMethod: SigninMethod): Promise<string> {
     this.assertBrowserSupported();
+    this.handleAbort();
 
     try {
       const signin = await this.signinBegin(signinMethod);
@@ -137,6 +150,8 @@ export class Client {
 
       const credential = await navigator.credentials.get({
         publicKey: signin.data,
+        mediation: 'autofill' in signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditational' yet
+        signal: this.abortController.signal,
       }) as PublicKeyCredential;
 
       const response = await this.signinComplete(credential, signin.sessionId);
@@ -196,7 +211,18 @@ export class Client {
     });
 
     return response.json();
+  } 
+
+  private handleAbort() {
+    this.abort();
+    this.abortController = new AbortController();
   }
+
+  abort() {
+    if (this.abortController) {
+      this.abortController.abort();
+    }
+  }  
 
   private assertBrowserSupported(): void {
     if (!isBrowserSupported()) {
@@ -209,7 +235,7 @@ export class Client {
       ApiKey: this.config.apiKey,
       'Content-Type': 'application/json',
     };
-  }
+  } 
 
   private coerceToArrayBuffer(value: unknown): ArrayBuffer {
     if (typeof value === 'string') {
@@ -261,4 +287,10 @@ export async function isPlatformSupported(): Promise<boolean> {
 
 export function isBrowserSupported(): boolean {
   return window.PublicKeyCredential !== undefined && typeof window.PublicKeyCredential === 'function';
+}
+
+export async function isAutofillSupported(): Promise<boolean> {
+  const PublicKeyCredential = window.PublicKeyCredential as any; // Typescript lacks support for this
+  if(!PublicKeyCredential.isConditionalMediationAvailable) return false;
+  return PublicKeyCredential.isConditionalMediationAvailable() as Promise<boolean>;
 }
