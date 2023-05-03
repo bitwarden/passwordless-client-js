@@ -6,31 +6,36 @@ const createPlugins = (compact) => compact
   : [];
 
 const iife = (compact) => ({
-  file: `dist/passwordless.iife${compact ? '.min' : ''}.js`,
+  file: `dist/iife/passwordless.iife${compact ? '.min' : ''}.js`,
   format: 'iife',
   name: 'Passwordless',
   sourcemap: true,
+  exports:"named",
   plugins: createPlugins(compact),
 });
 
 const es6 = (compact) => ({
-  file: `dist/passwordless${compact ? '.min' : ''}.mjs`,
-  format: 'es',
+  file: `dist/esm/passwordless${compact ? '.min' : ''}.mjs`,
+  format: 'esm',
   sourcemap: true,
+  exports:"named",
   plugins: createPlugins(compact),
 });
 
 const umd = (compact) => ({
-  file: `dist/passwordless.umd${compact ? '.min' : ''}.js`,
+  file: `dist/umd/passwordless.umd${compact ? '.min' : ''}.js`,
   format: 'umd',
   name: 'Passwordless',
+  esModule: false,
+  exports: 'named',
   plugins: createPlugins(compact),
 });
 
 const cjs = (compact) => ({
-  file: `dist/passwordless${compact ? '.min' : ''}.js`,
+  file: `dist/cjs/passwordless${compact ? '.min' : ''}.js`,
   format: 'cjs',
   name: 'Passwordless',
+  exports:"named",
   plugins: createPlugins(compact),
 });
 
