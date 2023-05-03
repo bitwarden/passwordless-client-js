@@ -171,9 +171,8 @@ export class Client {
             }) as PublicKeyCredential;
 
             const response = await this.signinComplete(credential, signin.sessionId);
-
+            
             return response;
-
         } catch (error: any) {
             console.error(error);
             throw new Error(`Passwordless signin failed: ${error.message}`);
@@ -228,8 +227,12 @@ export class Client {
             }),
         });
 
-        const body = await response.json();
-        return body;
+        const res = await response.json();
+        if(response.ok) {
+            return res;
+        }
+        
+        return { token: undefined, error: res}
     }
 
     private handleAbort() {
