@@ -4,7 +4,9 @@
   "main": "dist/passwordless.mjs",
   "types": "dist/passwordless.d.ts",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/passwordless/passwordless-client-js.git"
@@ -30,6 +32,6 @@
   "bugs": {
     "url": "https://github.com/passwordless/passwordless-client-js/issues"
   },
-  "homepage": "https://github.com/passwordless/passwordless-client-js#readme",  
+  "homepage": "https://github.com/passwordless/passwordless-client-js#readme",
   "license": "SEE LICENSE IN LICENCE.md"
 }
