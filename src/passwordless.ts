@@ -113,6 +113,14 @@ export class Client {
         return this.signin({autofill: true});
     }
 
+    /**
+     * Sign in a user using discoverable credentials     
+     * @returns a verify_token
+     */
+    public async signinWithDiscoverable(): PromiseResult<TokenResponse> {
+        return this.signin({discoverable: true});
+    }
+
     public abort() {
         if (this.abortController) {
             this.abortController.abort();
@@ -201,6 +209,11 @@ export class Client {
             this.assertBrowserSupported();
             this.handleAbort();
             
+            // if signinMethod is undefined, set it to an empty object
+            // this will cause a login using discoverable credentials
+            if(!signinMethod) {
+                signinMethod = { discoverable: true };
+            }            
                     
             const signin = await this.signinBegin(signinMethod);
             if(signin.error) {
