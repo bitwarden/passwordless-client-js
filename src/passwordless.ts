@@ -1,10 +1,8 @@
 import {
   AtLeast,
-  ProblemDetails,
   PromiseResult,
   RegisterBeginResponse,
-  RegisterCompleteResponse, Result,
-  SigninBeginResponse,
+  RegisterCompleteResponse, SigninBeginResponse,
   SigninMethod,
   SigninResponse
 } from './types';
@@ -41,10 +39,10 @@ export class Client {
         try {
             const registration = await this.registerBegin(token);
 
-            registration.data.challenge = this.coerceToArrayBuffer(registration.data.challenge);
-            registration.data.user.id = this.coerceToArrayBuffer(registration.data.user.id);
+            registration.data.challenge = base64UrlToArrayBuffer(registration.data.challenge);
+            registration.data.user.id = base64UrlToArrayBuffer(registration.data.user.id);
             registration.data.excludeCredentials?.forEach((cred) => {
-                cred.id = this.coerceToArrayBuffer(cred.id);
+                cred.id = base64UrlToArrayBuffer(cred.id);
             });
 
             const credential = await navigator.credentials.create({
@@ -125,15 +123,15 @@ export class Client {
                 sessionId,
                 response: {
                     id: credential.id,
-                    rawId: this.coerceToBase64Url(new Uint8Array(credential.rawId)),
+                    rawId: arrayBufferToBase64Url(credential.rawId),
                     type: credential.type,
                     extensions: credential.getClientExtensionResults(),
                     response: {
-                        AttestationObject: this.coerceToBase64Url(
-                            new Uint8Array(attestationResponse.attestationObject),
+                        AttestationObject: arrayBufferToBase64Url(
+                            attestationResponse.attestationObject
                         ),
-                        clientDataJson: this.coerceToBase64Url(
-                            new Uint8Array(attestationResponse.clientDataJSON),
+                        clientDataJson: arrayBufferToBase64Url(
+                            attestationResponse.clientDataJSON
                         ),
                     },
                 },
@@ -159,9 +157,9 @@ export class Client {
         try {
             const signin = await this.signinBegin(signinMethod);
 
-            signin.data.challenge = this.coerceToArrayBuffer(signin.data.challenge);
+            signin.data.challenge = base64UrlToArrayBuffer(signin.data.challenge);
             signin.data.allowCredentials?.forEach((cred) => {
-                cred.id = this.coerceToArrayBuffer(cred.id);
+                cred.id = base64UrlToArrayBuffer(cred.id);
             });
 
             const credential = await navigator.credentials.get({
@@ -207,18 +205,18 @@ export class Client {
                 sessionId,
                 response: {
                     id: credential.id,
-                    rawId: this.coerceToBase64Url(new Uint8Array(credential.rawId)),
+                    rawId: arrayBufferToBase64Url(new Uint8Array(credential.rawId)),
                     type: credential.type,
                     extensions: credential.getClientExtensionResults(),
                     response: {
-                        authenticatorData: this.coerceToBase64Url(
-                            new Uint8Array(assertionResponse.authenticatorData),
+                        authenticatorData: arrayBufferToBase64Url(
+                            assertionResponse.authenticatorData,
                         ),
-                        clientDataJson: this.coerceToBase64Url(
-                            new Uint8Array(assertionResponse.clientDataJSON),
+                        clientDataJson: arrayBufferToBase64Url(
+                            assertionResponse.clientDataJSON
                         ),
-                        signature: this.coerceToBase64Url(
-                            new Uint8Array(assertionResponse.signature),
+                        signature: arrayBufferToBase64Url(
+                            assertionResponse.signature
                         ),
                     },
                 },
@@ -253,46 +251,23 @@ export class Client {
         };
     }
 
-    private coerceToArrayBuffer(value: unknown): ArrayBuffer {
-        if (typeof value === 'string') {
-            const base64 = this.base64UrlToBase64(value);
-            const string = atob(base64);
-            const bytes = new Uint8Array(string.length);
-            for (let i = 0; i < string.length; i++) {
-                bytes[i] = string.charCodeAt(i);
-            }
+    
 
-            return bytes;
-        }
+    
+    
 
-        console.warn('Could not coerce to string:', value);
-        throw new TypeError('Could not coerce to ArrayBuffer');
+   
+
+    public isPlatformSupported(): Promise<boolean> {
+        return isPlatformSupported();    
+    }
+    
+    public isBrowserSupported(): boolean {
+        return isBrowserSupported();
     }
 
-    private coerceToBase64Url(value: unknown): string {
-        const uint8Array = (() => {
-            if (Array.isArray(value)) return Uint8Array.from(value);
-            if (value instanceof ArrayBuffer) return new Uint8Array(value);
-            if (value instanceof Uint8Array) return value;
-            console.warn('Could not coerce to string:', value);
-            throw new Error('Could not coerce to string');
-        })();
-
-        let string = '';
-        for (let i = 0; i < uint8Array.byteLength; i++) {
-            string += String.fromCharCode(uint8Array[i]);
-        }
-
-        const base64String = btoa(string);
-        return this.base64ToBase64Url(base64String);
-    }
-
-    private base64ToBase64Url(base64: string): string {
-        return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=*$/g, '');
-    }
-
-    private base64UrlToBase64(base64Url: string): string {
-        return base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    public isAutofillSupported(): Promise<boolean> {
+        return isAutofillSupported();
     }
 }
 
@@ -309,4 +284,53 @@ export async function isAutofillSupported(): Promise<boolean> {
     const PublicKeyCredential = window.PublicKeyCredential as any; // Typescript lacks support for this
     if (!PublicKeyCredential.isConditionalMediationAvailable) return false;
     return PublicKeyCredential.isConditionalMediationAvailable() as Promise<boolean>;
+}
+
+function base64ToBase64Url(base64: string): string {
+    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=*$/g, '');
+}
+
+function base64UrlToBase64(base64Url: string): string {
+    return base64Url.replace(/-/g, '+').replace(/_/g, '/');
+}
+
+function base64UrlToArrayBuffer(base64UrlString: string | BufferSource): ArrayBuffer {
+    // improvement: Remove BufferSource-type and add proper types upstream
+    if (typeof base64UrlString !== 'string') {
+        const msg = "Cannot convert from Base64Url to ArrayBuffer: Input was not of type string";
+        console.error(msg, base64UrlString);
+        throw new TypeError(msg);
+    }
+
+    const base64Unpadded = base64UrlToBase64(base64UrlString);
+    const paddingNeeded = (4 - (base64Unpadded.length % 4)) % 4;
+    const base64Padded = base64Unpadded.padEnd(base64Unpadded.length + paddingNeeded, "=");
+
+    const binary = window.atob(base64Padded);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+
+    return bytes;
+}
+
+function arrayBufferToBase64Url(buffer: ArrayBuffer | Uint8Array): string {
+    const uint8Array = (() => {
+        if (Array.isArray(buffer)) return Uint8Array.from(buffer);
+        if (buffer instanceof ArrayBuffer) return new Uint8Array(buffer);
+        if (buffer instanceof Uint8Array) return buffer;
+
+        const msg = "Cannot convert from ArrayBuffer to Base64Url. Input was not of type ArrayBuffer, Uint8Array or Array";
+        console.error(msg, buffer);
+        throw new Error(msg);
+    })();
+
+    let string = '';
+    for (let i = 0; i < uint8Array.byteLength; i++) {
+        string += String.fromCharCode(uint8Array[i]);
+    }
+
+    const base64String = window.btoa(string);
+    return base64ToBase64Url(base64String);
 }
