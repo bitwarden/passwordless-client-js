@@ -1,10 +1,11 @@
 import {
-  AtLeast,
-  PromiseResult,
-  RegisterBeginResponse,
-  RegisterCompleteResponse, SigninBeginResponse,
-  SigninMethod,
-  SigninResponse
+    AtLeast,
+    PromiseResult,
+    RegisterBeginResponse,
+    RegisterCompleteResponse,
+    SigninBeginResponse,
+    SigninMethod,
+    SigninResponse
 } from './types';
 
 export interface Config {
@@ -82,17 +83,29 @@ export class Client {
      * Sign in a user using autofill UI (a.k.a conditional) sign in
      * @returns a verify_token
      */
-    async signinWithAutofill(): PromiseResult<SigninResponse> {
+    public async signinWithAutofill(): PromiseResult<SigninResponse> {
         if (!await isAutofillSupported()) {
             throw new Error("Autofill authentication (conditional meditation) is not supported in this browser");
         }
         return this.signin({autofill: true});
     }
 
-    abort() {
+    public abort() {
         if (this.abortController) {
             this.abortController.abort();
         }
+    }
+
+    public isPlatformSupported(): Promise<boolean> {
+        return isPlatformSupported();
+    }
+
+    public isBrowserSupported(): boolean {
+        return isBrowserSupported();
+    }
+
+    public isAutofillSupported(): Promise<boolean> {
+        return isAutofillSupported();
     }
 
     private async registerBegin(token: string): Promise<RegisterBeginResponse> {
@@ -169,7 +182,7 @@ export class Client {
             }) as PublicKeyCredential;
 
             const response = await this.signinComplete(credential, signin.sessionId);
-            
+
             return response;
         } catch (error: any) {
             console.error(error);
@@ -226,11 +239,11 @@ export class Client {
         });
 
         const res = await response.json();
-        if(response.ok) {
+        if (response.ok) {
             return res;
         }
-        
-        return { token: undefined, error: res}
+
+        return {token: undefined, error: res}
     }
 
     private handleAbort() {
@@ -249,25 +262,6 @@ export class Client {
             ApiKey: this.config.apiKey,
             'Content-Type': 'application/json',
         };
-    }
-
-    
-
-    
-    
-
-   
-
-    public isPlatformSupported(): Promise<boolean> {
-        return isPlatformSupported();    
-    }
-    
-    public isBrowserSupported(): boolean {
-        return isBrowserSupported();
-    }
-
-    public isAutofillSupported(): Promise<boolean> {
-        return isAutofillSupported();
     }
 }
 
