@@ -2,9 +2,9 @@ export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 export type SigninMethod = { userId: string } | { alias: string } | { autofill: boolean };
 
-export interface RegisterBeginResponse {
+export type RegisterBeginResponse = {
     session: string;
-    data: PublicKeyCredentialCreationOptions;
+    data: PublicKeyCredentialCreationOptions;    
 }
 
 export type Success<T> = {
@@ -12,7 +12,7 @@ export type Success<T> = {
 } & { error: undefined };
 
 export type Error<T> = {
-    [P in keyof T]: undefined;
+    [P in keyof T]?: undefined;
 } & { error: ProblemDetails };
 
 export type Result<T> = Success<T> | Error<T>;
@@ -23,11 +23,12 @@ export interface TokenResponse {
     token: string
 }
 
-export type SigninBeginResponse = { data: PublicKeyCredentialRequestOptions; session: string; error: undefined }
+export type SigninBeginResponse = { data: PublicKeyCredentialRequestOptions; session: string; }
 
 export interface ProblemDetails {
+    from: string;
     errorCode: string;
     title: string;
-    status: number;
-    detail: string;
+    status?: number;
+    detail?: string;
 }
