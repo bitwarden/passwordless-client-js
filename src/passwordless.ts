@@ -325,6 +325,7 @@ export class Client {
         return {
             ApiKey: this.config.apiKey,
             'Content-Type': 'application/json',
+            'Client-Version': 'js-1.1.0'
         };
     }
 }
