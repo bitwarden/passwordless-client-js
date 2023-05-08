@@ -76,7 +76,8 @@ export class Client {
                 errorCode: "unknown",
                 title: errorMessage,
             };
-            console.error(error, caughtError);
+            console.error(caughtError);
+            console.error(error);
             
             return { error };
         }
@@ -241,7 +242,8 @@ export class Client {
                 errorCode: "unknown",
                 title: errorMessage,
             };
-            console.error(error, caughtError);
+            console.error(caughtError);
+            console.error(error);
 
             return { error };
         }
