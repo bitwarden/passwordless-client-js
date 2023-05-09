@@ -1,6 +1,6 @@
 {
   "name": "@passwordlessdev/passwordless-client",
-  "version": "0.3.1",
+  "version": "1.1.0-beta",
   "main": "dist/passwordless.mjs",
   "types": "dist/passwordless.d.ts",
   "type": "module",
@@ -28,7 +28,7 @@
     "build": "rimraf dist && tsc && rollup -c",
     "prepare": "yarn build"
   },
-  "description": "This library allows you to fast & without complexity add passwordless sign in (using fido2/webauthn) to your web application.",
+  "description": "This library allows you to to easily add passwordless sign in (using fido2/webauthn) to your web application.",
   "bugs": {
     "url": "https://github.com/passwordless/passwordless-client-js/issues"
   },
