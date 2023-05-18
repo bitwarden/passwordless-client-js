@@ -15,21 +15,25 @@ To start, download the Passwordless.js library:
 
 #### NPM package
 Install the Passwordless.dev JS client:
-```
+
+```console
 yarn add @passwordlessdev/passwordless-client
 ```
+
 Next, your front end must import the libary to call the methods:
-```
+
+```js
 import { Client } from '@passwordlessdev/passwordless-client';
 const p = new Client({apiKey: ""});
 ```
-#### HTTP
+#### HTML
 Install the Passwordless.dev JS client:
-```
+
+```html
 <script src="https://cdn.passwordless.dev/dist/0.4.0/passwordless.iife.js" crossorigin="anonymous"></script>`
 ```
 Next, your front end must import the libary to call the methods:
-```
+```html
 <script>
 const p = new Passwordless.Client({});
 </script>
@@ -37,7 +41,7 @@ const p = new Passwordless.Client({});
 
 ## Build the library
 Run:
-```
+```console
 yarn build
 ```
 
