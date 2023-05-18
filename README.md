@@ -1,58 +1,65 @@
-# Webauthn Passwordless js library
 
-This library allows you to fast & without complexity add passwordless sign in (using fido2/webauthn) to your web
-application.
 
-[Read the paswordless documentation](https://docs.passwordless.dev/)
+![passwordless by bitwarden](./Screenshot%202023-04-28%20at%2011.50.52%20AM%20(2).png)
 
-## Overview
+Welcome to Passwordless.dev by Bitwarden. Passwordless.dev is a software toolkit that helps developers bring FIDO2 WebAuthn passkeys to their end users. Provide passwordless authentication without the need to read W3C spoecification documentation, determine cryptography, or manage stored public keys. Passwordless with Bitwarden does this for you.
 
-This is what you need to do:
+## Get started
+Passwordless.dev consists of three key parts:
 
-1. [Read the docs](https://docs.passwordless.dev/)
-3. **You add our client side library** and call the function `register` or e.g. `signinWithDiscoverable()`
-4. **You add two very simple endpoints on your backend** that integrates to your existing user system (*set cookie,
-   sessions, etc*) (and communicates secrets with our API).
-5. You make a request between your clientside code and the verification endpoints on your backend to verify the
-   registration or sign in.
+* An open-source client side library, used by your frontend to make requests to the end-user's browser WebAuthn API and requests to the passwordless.dev APIs.
+* A public RESTful API used to compelte FIDO2 WebAuthn cryptographic exchanges with the browser.
+* a private RESTful API used  to initiate key registrations, verify signins, and retrieve keys for end-users.
 
-## Get coding
+To start, download the Passwordless.js library:
 
-To get started, add the library to your website (npm, ES6 module or good old global script tag):
-
-NPM package:
-
-```bash
+#### NPM package
+Install the Passwordless.dev JS client:
+```
 yarn add @passwordlessdev/passwordless-client
 ```
-
-```js
+Next, your front end must import the libary to call the methods:
+```
 import { Client } from '@passwordlessdev/passwordless-client';
 const p = new Client({apiKey: ""});
 ```
-
-Normal script tag:
-
-```html
-<script src="https://cdn.passwordless.dev/dist/1.1.0/umd/passwordless.umd.min.js" crossorigin="anonymous"></script>
-
+#### HTTP
+Install the Passwordless.dev JS client:
+```
+<script src="https://cdn.passwordless.dev/dist/0.4.0/passwordless.iife.js" crossorigin="anonymous"></script>`
+```
+Next, your front end must import the libary to call the methods:
+```
 <script>
-const p = new Passwordless.Client({ apiKey: ""});
+const p = new Passwordless.Client({});
 </script>
 ```
 
-ES6 module script-tag:
-
-
-ES6 module:
-
-```js
-import { Client } from "https://cdn.passwordless.dev/dist/1.1.0/esm/passwordless.min.mjs"
-const p = new Client({apiKey: ""});
+## Build the library
+Run:
+```
+yarn build
 ```
 
+## Get API credentials
+Passwordless.dev's Admin Panel is a GUI for application and API key management. You can manage your users and receive your `publicKey` and `apiSecret` from the interface.
 
+Register at [with the admin console](https://adminconsole-devtest.azurewebsites.net/Account/Login)
 
-# Build this library
+## Next steps
 
-Run `yarn build`
+1. Call the function `register` or (e.g. `signinWithDiscoverable()`).
+2. Add two endpoints to your backend that integrate to your ecisting user system (*set cookie, sessions, and more*) and will communicate secrets with our API.
+3. Make a reques request between your clientside code and the verification endpoints on your backend to verify the registration or sign in.
+
+Now that your libary has been built and you can run passwordless, review the Passwordless.dev [docs](https://docs.passwordless.dev/guide/) for additional infomraiton including alternitive language integrations, admin console management, and more!
+
+## Help
+To talk to the passwordless team, send us an email at support@passwordless.dev
+
+## Bitwarden
+You can fine Bitwarden's other code repositories at https://github.com/bitwarden and more infomration on https://bitwarden.com/.
+
+## Contribute
+
+We encourage all contributions to docs.passwordless.dev, whether that's opening issues to request edits or additions, or adding them yourself in PRs.
