@@ -1,6 +1,6 @@
 {
   "name": "@passwordlessdev/passwordless-client",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "dist/esm/passwordless.mjs",
   "types": "dist/passwordless.d.ts",
   "type": "module",
