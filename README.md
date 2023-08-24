@@ -30,7 +30,7 @@ Next, your front end must import the library to call the methods:
 
 ```js
 import { Client } from '@passwordlessdev/passwordless-client';
-const p = new Client({apiKey: "", api: "https://v4.passwordless.dev"});
+const p = new Client({apiKey: ""});
 ```
 
 > The `api` parameter is optional when you use cloud hosting. For self-hosting, you'll need to point this to the Passwordless.dev back-end.
@@ -47,7 +47,7 @@ Next, your front end must import the libary to call the methods:
 
 ```html
 <script>
-const p = new Passwordless.Client({apiKey: "", api: "https://v4.passwordless.dev"});
+const p = new Passwordless.Client({apiKey: ""});
 </script>
 ```
 
@@ -89,7 +89,7 @@ To create an account for yourself or your organization, visit [this link](https:
 2. Add two endpoints to your backend that integrate to your existing user system (*set cookie, sessions, and more*) and will communicate secrets with our API.
 3. Make a request between your clientside code and the verification endpoints on your backend to verify the registration or sign in.
 
-Now that your library has been built, and you can run passwordless, review the Passwordless.dev [docs](https://docs.passwordless.dev/guide/) for additional information including alternative language integrations, admin console management, and more!
+We've written a more detailed guide, with more language examples and SDKs in the [Passwordless.dev](https://docs.passwordless.dev/guide/) documentation.
 
 ## Help
 
