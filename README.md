@@ -33,8 +33,6 @@ import { Client } from '@passwordlessdev/passwordless-client';
 const p = new Client({apiKey: ""});
 ```
 
-> The `api` parameter is optional when you use cloud hosting. For self-hosting, you'll need to point this to the Passwordless.dev back-end.
-
 #### HTML
 
 Install the Passwordless.dev JS client:
@@ -66,6 +64,12 @@ const registerToken = await fetch(backendUrl + "/create-token?userId" + userId).
 // Register the token with the end-user's device.
 const { token, error } = await p.register(registerToken);
 ```
+
+## Advanced configuration
+
+When selfhosting, the `apiUrl` property in the constructor can be used to configure the URL for the Passwordless.dev server.
+
+For advanced usages, you can also configure the `origin` and the `rpid`.
 
 ## Build the library
 
