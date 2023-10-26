@@ -191,6 +191,7 @@ export class Client {
                 nickname: credentialNickname,
                 RPID: this.config.rpid,
                 Origin: this.config.origin,
+                ServerName: this.config.serverName
             }),
         });
 
