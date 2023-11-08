@@ -12,7 +12,6 @@ export interface Config {
     apiKey: string;
     origin: string;
     rpid: string;
-    serverName: string;
 }
 
 export class Client {
@@ -20,8 +19,7 @@ export class Client {
         apiUrl: 'https://v4.passwordless.dev',
         apiKey: '',
         origin: window.location.origin,
-        rpid: window.location.hostname,
-        serverName: 'Passwordless.dev'
+        rpid: window.location.hostname
     };
     private abortController: AbortController = new AbortController();
 
@@ -149,8 +147,7 @@ export class Client {
             body: JSON.stringify({
                 token,
                 RPID: this.config.rpid,
-                Origin: this.config.origin,
-                ServerName: this.config.serverName
+                Origin: this.config.origin
             }),
         });
 
@@ -190,8 +187,7 @@ export class Client {
                 },
                 nickname: credentialNickname,
                 RPID: this.config.rpid,
-                Origin: this.config.origin,
-                ServerName: this.config.serverName
+                Origin: this.config.origin
             }),
         });
 
