@@ -175,7 +175,7 @@ export class Client {
                     id: credential.id,
                     rawId: arrayBufferToBase64Url(credential.rawId),
                     type: credential.type,
-                    extensions: credential.getClientExtensionResults(),
+                    clientExtensionResults: credential.getClientExtensionResults(),
                     response: {
                         AttestationObject: arrayBufferToBase64Url(
                             attestationResponse.attestationObject
