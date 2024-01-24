@@ -1,6 +1,6 @@
 ![passwordless by bitwarden](./Screenshot%202023-04-28%20at%2011.50.52%20AM%20(2).png)
 
-Welcome to Passwordless.dev by Bitwarden. Passwordless.dev is a software toolkit that helps developers bring FIDO2 WebAuthn passkeys to their end users. Provide passwordless authentication without the need to read W3C spoecification documentation, determine cryptography, or manage stored public keys. Passwordless with Bitwarden does this for you.
+Welcome to Passwordless.dev by Bitwarden. Passwordless.dev is a software toolkit that helps developers bring FIDO2 WebAuthn passkeys to their end users. Provide passwordless authentication without the need to read W3C specification documentation, determine cryptography, or manage stored public keys. Passwordless with Bitwarden does this for you.
 
 ## Get started
 
