@@ -284,7 +284,7 @@ export class Client {
                     id: credential.id,
                     rawId: arrayBufferToBase64Url(new Uint8Array(credential.rawId)),
                     type: credential.type,
-                    extensions: credential.getClientExtensionResults(),
+                    clientExtensionResults: credential.getClientExtensionResults(),
                     response: {
                         authenticatorData: arrayBufferToBase64Url(
                             assertionResponse.authenticatorData,
