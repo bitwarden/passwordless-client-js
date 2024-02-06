@@ -25,6 +25,14 @@ jobs:
         path: |
           dist
           package.json
+    - name: Trigger NPM Release
+      uses: lasith-kg/dispatch-workflow@v1
+      with:
+        dispatch-method: workflow_dispatch
+        repo: 'passwordless-client-js'
+        owner: ${{ github.repository_owner }}
+        workflow: ${{ github.workflow }}
+        token: ${{ secrets.PAT }}
     - name: Trigger Release Workflow
       run: |
         curl -X POST \
