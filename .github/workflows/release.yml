@@ -31,6 +31,6 @@ jobs:
         dispatch-method: workflow_dispatch
         repo: 'passwordless-client-js'
         owner: ${{ github.repository_owner }}
-        workflow: ${{ github.workflow }}
+        workflow: 'passwordless-client-js'
         token: ${{ secrets.PAT }}
         ref: ${{ github.ref }}
