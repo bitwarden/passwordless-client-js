@@ -33,10 +33,3 @@ jobs:
         owner: ${{ github.repository_owner }}
         workflow: ${{ github.workflow }}
         token: ${{ secrets.PAT }}
-    - name: Trigger Release Workflow
-      run: |
-        curl -X POST \
-          -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Authorization: token ${{ secrets.PAT }}" \
-          --data '{"event_type": "release", "client_payload": { "repository": "${{ github.repository }}", "ref": "${{ github.event.release.tag_name }}" }}' \
-          https://api.github.com/repos/jonashendrickx/passwordless-devops/dispatches
