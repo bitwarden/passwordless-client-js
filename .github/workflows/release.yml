@@ -33,3 +33,4 @@ jobs:
         owner: ${{ github.repository_owner }}
         workflow: ${{ github.workflow }}
         token: ${{ secrets.PAT }}
+        ref: ${{ github.ref }}
