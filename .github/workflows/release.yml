@@ -32,14 +32,4 @@ jobs:
         -H "Authorization: token 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" \
         -H "Accept: application/vnd.github.v3+json" \
         https://api.github.com/repos/jonashendrickx/passwordless-devops/actions/workflows/passwordless-client-js.yml/dispatches \
-        -d '{"ref":"${{ github.ref }}"}'
-
-    - name: Trigger NPM Release
-      uses: lasith-kg/dispatch-workflow@v1
-      with:
-        dispatch-method: workflow_dispatch
-        repo: 'passwordless-client-js'
-        owner: ${{ github.repository_owner }}
-        token: ${{ secrets.PAT }}
-        ref: ${{ github.ref }}
-        workflow: 'passwordless-client-js.yml'
+        -d '{"ref":"master"}'
