@@ -29,7 +29,7 @@ jobs:
     - name: Trigger NPM Release
       run: |
         curl -X POST \
-        -H "Authorization: token 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" \
+        -H "Authorization: token ${{ secrets.PAT }}" \
         -H "Accept: application/vnd.github.v3+json" \
         https://api.github.com/repos/jonashendrickx/passwordless-devops/actions/workflows/passwordless-client-js.yml/dispatches \
         -d '{"ref":"master"}'
