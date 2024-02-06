@@ -24,7 +24,7 @@ jobs:
         name: dist-without-markdown
         path: |
           dist
-          !dist/**/*.md
+          package.json
     - name: Trigger Release Workflow
       run: |
         curl -X POST \
