@@ -1,0 +1,22 @@
+name: Release Workflow
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  release-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Trigger Repository Dispatch
+      run: |
+        curl -X POST \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          --data '{"event_type": "custom-release-event", "client_payload": { "repository": "passwordless-client-js", "ref": ${{ github.event.release.tag_name }} }}' \
+          https://api.github.com/repos/passwordless-devops/dispatches
