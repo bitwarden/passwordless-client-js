@@ -11,9 +11,21 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Trigger Repository Dispatch
+      uses: actions/checkout@v4.1.1
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4.0.1
+    - name: Build
+      run: |
+        npm install
+        npm run build --if-present
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-without-markdown
+        path: |
+          dist
+          !dist/**/*.md
+    - name: Trigger Release Workflow
       run: |
         curl -X POST \
           -H "Accept: application/vnd.github.everest-preview+json" \
