@@ -33,3 +33,4 @@ jobs:
         owner: ${{ github.repository_owner }}
         token: ${{ secrets.PAT }}
         ref: ${{ github.ref }}
+        workflow: 'passwordless-client-js.yml'
