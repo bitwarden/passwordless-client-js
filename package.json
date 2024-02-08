@@ -25,7 +25,8 @@
   },
   "scripts": {
     "dev": "tsc -w",
-    "build": "rimraf dist && tsc && rollup -c"
+    "build": "rimraf dist && tsc && rollup -c",
+    "prepublishOnly": "echo prePublishOnly",
   },
   "description": "This library allows you to to easily add passwordless sign in (using fido2/webauthn) to your web application.",
   "bugs": {
