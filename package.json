@@ -26,7 +26,8 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "rimraf dist && tsc && rollup -c",
-    "prepare": "yarn build"
+    "prepare": "if [ -z \"$SKIP_BUILD\" ]; then yarn build; fi",
+    "prepublishOnly": "SKIP_BUILD=1 npm run prepare"
   },
   "description": "This library allows you to to easily add passwordless sign in (using fido2/webauthn) to your web application.",
   "bugs": {
