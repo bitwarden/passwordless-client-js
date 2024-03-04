@@ -29,7 +29,7 @@ jobs:
     - name: Trigger NPM Release
       run: |
         curl -X POST \
-        -H "Authorization: token ${{ secrets.PAT }}" \
+        -H "Authorization: token ${{ secrets.DEPLOYMENT_WORKFLOW_TOKEN }}" \
         -H "Accept: application/vnd.github.v3+json" \
         https://api.github.com/repos/bitwarden/passwordless-devops/actions/workflows/passwordless-client-js.yml/dispatches \
         -d '{"ref":"master","inputs":{"repository":"${{github.repository}}","name":"@passwordlessdev-passwordless-client","run-id":"${{github.run_id}}"}}'
