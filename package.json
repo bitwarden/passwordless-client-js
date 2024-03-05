@@ -16,17 +16,17 @@
     "David Fant"
   ],
   "devDependencies": {
-    "@rollup/plugin-typescript": "^8.2.5",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.55.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "tslib": "^2.3.0",
-    "typescript": "^4.8.4"
+    "@rollup/plugin-typescript": "8.2.5",
+    "rimraf": "3.0.2",
+    "rollup": "2.55.1",
+    "rollup-plugin-terser": "7.0.2",
+    "tslib": "2.3.0",
+    "typescript": "4.8.4"
   },
   "scripts": {
     "dev": "tsc -w",
     "build": "rimraf dist && tsc && rollup -c",
-    "prepare": "yarn build"
+    "prepublishOnly": "echo prePublishOnly"
   },
   "description": "This library allows you to to easily add passwordless sign in (using fido2/webauthn) to your web application.",
   "bugs": {
