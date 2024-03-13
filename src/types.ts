@@ -1,6 +1,34 @@
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
+/**
+ * Represents a sign-in method.
+ */
 export type SigninMethod = { userId: string } | { alias: string } | { autofill: boolean } | { discoverable: boolean };
+
+/**
+ *
+ */
+export interface StepupRequest {
+    signinMethod: SigninMethod;
+    context: StepupContext;
+}
+
+/**
+ * Represents the context for step-up authentication.
+ * @interface
+ */
+export interface StepupContext {
+    /**
+     *
+     */
+    context: string;
+    /**
+     * Time to Live (TTL) in seconds.
+     *
+     * @type {number}
+     */
+    ttl: number;
+}
 
 export type RegisterBeginResponse = {
     session: string;

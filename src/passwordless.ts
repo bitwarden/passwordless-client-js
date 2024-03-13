@@ -4,6 +4,8 @@ import {
     RegisterBeginResponse,
     SigninBeginResponse,
     SigninMethod,
+    StepupContext,
+    StepupRequest,
     TokenResponse
 } from './types';
 
@@ -242,6 +244,72 @@ export class Client {
 
       return {error};
     }
+  }
+
+  public async stepup(stepup: StepupRequest) {
+    try {
+      this.assertBrowserSupported();
+      this.handleAbort();
+
+      if (!stepup.signinMethod) {
+        stepup.signinMethod = {discoverable: true};
+      }
+
+      const signin = await this.signinBegin(stepup.signinMethod);
+
+      if (signin.error) {
+        return signin;
+      }
+
+      const credential = await navigator.credentials.get({
+        publicKey: signin.data,
+        mediation: 'autofill' in stepup.signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditional' yet
+        signal: this.abortController.signal,
+      }) as PublicKeyCredential;
+
+      return await this.stepupComplete(credential, signin.session, stepup.context);
+    } catch (caughtError: any) {
+      const errorMessage = getErrorMessage(caughtError);
+      const error = {
+        from: "client",
+        errorCode: "unknown",
+        title: errorMessage,
+      };
+      console.error(caughtError);
+      console.error(error);
+
+      return {error};
+    }
+  }
+
+  private async stepupComplete(credential: PublicKeyCredential, session: string, context: StepupContext) {
+    const assertionResponse = credential.response as AuthenticatorAssertionResponse;
+
+    const response = await fetch(`${this.config.apiUrl}/stepup`, {
+      method: 'POST',
+      headers: this.createHeaders(),
+      body: JSON.stringify({
+        session: session,
+        context: context,
+        response: {
+          id: credential.id,
+          type: credential.type,
+          rawId: arrayBufferToBase64Url(new Uint8Array(credential.rawId)),
+          extensions: credential.getClientExtensionResults(),
+          response: {
+            authenticatorData: arrayBufferToBase64Url(assertionResponse.authenticatorData),
+            clientDataJson: arrayBufferToBase64Url(assertionResponse.clientDataJSON),
+            signature: arrayBufferToBase64Url(assertionResponse.signature),
+          },
+        },
+        RPID: this.config.rpid,
+        Origin: this.config.origin,
+      })
+    });
+
+    return response.ok
+      ? response.json()
+      : {error: {...response, from: "server"}};
   }
 
   private async signinBegin(signinMethod: SigninMethod): PromiseResult<SigninBeginResponse> {
