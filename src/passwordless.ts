@@ -221,11 +221,6 @@ export class Client {
                 return signin;
             }
 
-      signin.data.challenge = base64UrlToArrayBuffer(signin.data.challenge);
-      signin.data.allowCredentials?.forEach((cred) => {
-        cred.id = base64UrlToArrayBuffer(cred.id);
-      });
-
       const credential = await navigator.credentials.get({
         publicKey: signin.data,
         mediation: 'autofill' in signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditational' yet
@@ -263,7 +258,15 @@ export class Client {
 
     const res = await response.json();
     if (response.ok) {
-      return res;
+      return {
+        ...res,
+        data: {
+          ...res.data,
+          allowCredentials: res.data.allowCredentials?.map((cred: PublicKeyCredentialDescriptor) => {
+            return {...cred, id: base64UrlToArrayBuffer(cred.id)};
+          })
+        }
+      };
     }
 
         return { error: { ...res, from: "server" } };
