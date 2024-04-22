@@ -4,7 +4,6 @@ import {
     RegisterBeginResponse,
     SigninBeginResponse,
     SigninMethod,
-    StepupContext,
     StepupRequest,
     TokenResponse
 } from './types';
@@ -246,16 +245,16 @@ export class Client {
     }
   }
 
-  public async stepup(stepup: StepupRequest) {
+  public async stepup(stepup: StepupRequest, callback: (token: string | undefined, args?: any) => any) {
     try {
       this.assertBrowserSupported();
       this.handleAbort();
 
       if (!stepup.signinMethod) {
-        stepup.signinMethod = {discoverable: true};
+        throw new Error("You need to provide the signInMethod");
       }
 
-      const signin = await this.signinBegin(stepup.signinMethod);
+      const signin = await this.signinBegin(stepup.signinMethod, stepup.purpose);
 
       if (signin.error) {
         return signin;
@@ -267,7 +266,11 @@ export class Client {
         signal: this.abortController.signal,
       }) as PublicKeyCredential;
 
-      return await this.stepupComplete(credential, signin.session, stepup.context);
+      const signInComplete = await this.signinComplete(credential, signin.session);
+
+      return callback === undefined || callback === null
+        ? signInComplete
+        : callback(signInComplete.token);
     } catch (caughtError: any) {
       const errorMessage = getErrorMessage(caughtError);
       const error = {
@@ -282,37 +285,7 @@ export class Client {
     }
   }
 
-  private async stepupComplete(credential: PublicKeyCredential, session: string, context: StepupContext) {
-    const assertionResponse = credential.response as AuthenticatorAssertionResponse;
-
-    const response = await fetch(`${this.config.apiUrl}/stepup`, {
-      method: 'POST',
-      headers: this.createHeaders(),
-      body: JSON.stringify({
-        session: session,
-        context: context,
-        response: {
-          id: credential.id,
-          type: credential.type,
-          rawId: arrayBufferToBase64Url(new Uint8Array(credential.rawId)),
-          extensions: credential.getClientExtensionResults(),
-          response: {
-            authenticatorData: arrayBufferToBase64Url(assertionResponse.authenticatorData),
-            clientDataJson: arrayBufferToBase64Url(assertionResponse.clientDataJSON),
-            signature: arrayBufferToBase64Url(assertionResponse.signature),
-          },
-        },
-        RPID: this.config.rpid,
-        Origin: this.config.origin,
-      })
-    });
-
-    return response.ok
-      ? response.json()
-      : {error: {...response, from: "server"}};
-  }
-
-  private async signinBegin(signinMethod: SigninMethod): PromiseResult<SigninBeginResponse> {
+  private async signinBegin(signinMethod: SigninMethod, purpose?: string): PromiseResult<SigninBeginResponse> {
     const response = await fetch(`${this.config.apiUrl}/signin/begin`, {
       method: 'POST',
       headers: this.createHeaders(),
@@ -321,6 +294,7 @@ export class Client {
         alias: "alias" in signinMethod ? signinMethod.alias : undefined,
         RPID: this.config.rpid,
         Origin: this.config.origin,
+        purpose: purpose
       }),
     });
 
@@ -330,6 +304,7 @@ export class Client {
         ...res,
         data: {
           ...res.data,
+          challenge: base64UrlToArrayBuffer(res.data.challenge),
           allowCredentials: res.data.allowCredentials?.map((cred: PublicKeyCredentialDescriptor) => {
             return {...cred, id: base64UrlToArrayBuffer(cred.id)};
           })
