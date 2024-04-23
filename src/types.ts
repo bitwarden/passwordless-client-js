@@ -6,7 +6,9 @@ export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 export type SigninMethod = { userId: string } | { alias: string } | { autofill: boolean } | { discoverable: boolean };
 
 /**
+ * Represents a step-up request to initiate a specific action or operation.
  *
+ * @interface StepupRequest
  */
 export interface StepupRequest {
     signinMethod: SigninMethod;
