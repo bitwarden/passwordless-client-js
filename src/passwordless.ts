@@ -249,7 +249,7 @@ export class Client {
    * Performs a step-up authentication process. This is essentially an overload for the sign-in workflow. It allows for
    * a user authentication to be given a purpose or context for the sign-in, enabling a "step-up" authentication flow.
    *
-   * @param {object} stepup - The step-up request object. This includes the sign-in method and the purpose of the authentication
+   * @param {StepupRequest} stepup - The step-up request object. This includes the sign-in method and the purpose of the authentication
    * @param {function} callback - The optional callback function to handle the result of the step-up process.
    *                             Receives the token as the first argument and optional additional arguments.
    * @returns {object} - The result of the step-up process. If a callback function is provided, it returns
