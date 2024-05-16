@@ -1,7 +1,7 @@
 import {
     AtLeast,
     PromiseResult,
-    RegisterBeginResponse,    
+    RegisterBeginResponse,
     SigninBeginResponse,
     SigninMethod,
     TokenResponse
@@ -34,13 +34,13 @@ export class Client {
      * @param {string} credentialNickname A nickname for the passkey credential being created
      */
     public async register(token: string, credentialNickname: string): PromiseResult<TokenResponse> {
-        try {            
+        try {
             this.assertBrowserSupported();
-            
+
             const registration = await this.registerBegin(token);
-            if(registration.error) {
+            if (registration.error) {
                 console.error(registration.error);
-                return { error: registration.error}                
+                return { error: registration.error }
             }
 
             registration.data.challenge = base64UrlToArrayBuffer(registration.data.challenge);
@@ -64,14 +64,14 @@ export class Client {
             }
 
             return await this.registerComplete(credential, registration.session, credentialNickname);
-            
+
             // next steps
             // return a token from the API
             // Add a type to the token (method/action)
-            
+
         } catch (caughtError: any) {
-            
-            const errorMessage = getErrorMessage(caughtError);                            
+
+            const errorMessage = getErrorMessage(caughtError);
             const error = {
                 from: "client",
                 errorCode: "unknown",
@@ -79,7 +79,7 @@ export class Client {
             };
             console.error(caughtError);
             console.error(error);
-            
+
             return { error };
         }
     }
@@ -90,10 +90,9 @@ export class Client {
      * @returns
      */
     public async signinWithId(userId: string): PromiseResult<TokenResponse> {
-        return this.signin({userId})
+        return this.signin({ userId })
     }
 
-    
 
     /**
      * Sign in a user using an alias
@@ -101,7 +100,7 @@ export class Client {
      * @returns a verify_token
      */
     public async signinWithAlias(alias: string): PromiseResult<TokenResponse> {
-        return this.signin({alias})
+        return this.signin({ alias })
     }
 
     /**
@@ -112,15 +111,15 @@ export class Client {
         if (!await isAutofillSupported()) {
             throw new Error("Autofill authentication (conditional meditation) is not supported in this browser");
         }
-        return this.signin({autofill: true});
+        return this.signin({ autofill: true });
     }
 
     /**
-     * Sign in a user using discoverable credentials     
+     * Sign in a user using discoverable credentials
      * @returns a verify_token
      */
     public async signinWithDiscoverable(): PromiseResult<TokenResponse> {
-        return this.signin({discoverable: true});
+        return this.signin({ discoverable: true });
     }
 
     public abort() {
@@ -157,7 +156,7 @@ export class Client {
             return res;
         }
 
-        return { error: {...res, from: "server"}};
+        return { error: { ...res, from: "server" } };
     }
 
     private async registerComplete(
@@ -197,7 +196,7 @@ export class Client {
             return res;
         }
 
-        return { error: {...res, from: "server"}};
+        return { error: { ...res, from: "server" } };
     }
 
     /**
@@ -210,15 +209,15 @@ export class Client {
         try {
             this.assertBrowserSupported();
             this.handleAbort();
-            
+
             // if signinMethod is undefined, set it to an empty object
             // this will cause a login using discoverable credentials
-            if(!signinMethod) {
+            if (!signinMethod) {
                 signinMethod = { discoverable: true };
-            }            
-                    
+            }
+
             const signin = await this.signinBegin(signinMethod);
-            if(signin.error) {
+            if (signin.error) {
                 return signin;
             }
 
@@ -235,8 +234,8 @@ export class Client {
 
             const response = await this.signinComplete(credential, signin.session);
             return response;
-            
-        } catch (caughtError: any) {           
+
+        } catch (caughtError: any) {
             const errorMessage = getErrorMessage(caughtError);
             const error = {
                 from: "client",
@@ -267,7 +266,7 @@ export class Client {
             return res;
         }
 
-        return { error: {...res, from: "server"}};
+        return { error: { ...res, from: "server" } };
     }
 
     private async signinComplete(
@@ -308,7 +307,7 @@ export class Client {
             return res;
         }
 
-        return { error: {...res, from: "server"}};
+        return { error: { ...res, from: "server" } };
     }
 
     private handleAbort() {
