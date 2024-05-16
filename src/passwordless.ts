@@ -61,7 +61,7 @@ export class Client {
                     title: "Failed to create credential (navigator.credentials.create returned null)",
                 };
                 console.error(error);
-                return {error};
+                return { error };
             }
 
             return await this.registerComplete(credential, registration.session, credentialNickname);
@@ -241,7 +241,7 @@ export class Client {
             console.error(caughtError);
             console.error(error);
 
-            return {error};
+            return { error };
         }
     }
 
@@ -291,7 +291,7 @@ export class Client {
             console.error(caughtError);
             console.error(error);
 
-            return {error};
+            return { error };
         }
     }
 
@@ -316,7 +316,7 @@ export class Client {
                     ...res.data,
                     challenge: base64UrlToArrayBuffer(res.data.challenge),
                     allowCredentials: res.data.allowCredentials?.map((cred: PublicKeyCredentialDescriptor) => {
-                        return {...cred, id: base64UrlToArrayBuffer(cred.id)};
+                        return { ...cred, id: base64UrlToArrayBuffer(cred.id) };
                     })
                 }
             };
