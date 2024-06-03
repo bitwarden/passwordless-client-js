@@ -264,6 +264,10 @@ export class Client {
                 throw new Error("You need to provide the signInMethod");
             }
 
+            if (!stepup.purpose) {
+                stepup.purpose = "step-up";
+            }
+
             const signin = await this.signinBegin(stepup.signinMethod, stepup.purpose);
 
             if (signin.error) {
