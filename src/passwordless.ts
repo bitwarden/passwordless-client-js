@@ -250,12 +250,10 @@ export class Client {
      * a user authentication to be given a purpose or context for the sign-in, enabling a "step-up" authentication flow.
      *
      * @param {StepupRequest} stepup - The step-up request object. This includes the sign-in method and the purpose of the authentication
-     * @param {function} callback - The optional callback function to handle the result of the step-up process.
-     *                             Receives the token as the first argument and optional additional arguments.
-     * @returns {object} - The result of the step-up process. If a callback function is provided, it returns
-     *                    the result of the callback function; otherwise, it returns the result directly.
+     *
+     * @returns {token} - The result of the step-up sign-in process.
      */
-    public async stepup(stepup: StepupRequest, callback?: (token: string | undefined, args?: any) => any) {
+    public async stepup(stepup: StepupRequest) {
         try {
             this.assertBrowserSupported();
             this.handleAbort();
@@ -280,11 +278,7 @@ export class Client {
                 signal: this.abortController.signal,
             }) as PublicKeyCredential;
 
-            const signInComplete = await this.signinComplete(credential, signin.session);
-
-            return callback === undefined || callback === null
-                ? signInComplete
-                : callback(signInComplete.token);
+            return await this.signinComplete(credential, signin.session);
         } catch (caughtError: any) {
             const errorMessage = getErrorMessage(caughtError);
             const error = {
