@@ -253,7 +253,7 @@ export class Client {
      *
      * @returns {token} - The result of the step-up sign-in process.
      */
-    public async stepup(stepup: StepupRequest) {
+    public async stepup(stepup: StepupRequest) : PromiseResult<TokenResponse> {
         try {
             this.assertBrowserSupported();
             this.handleAbort();
