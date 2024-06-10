@@ -24,8 +24,8 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "rimraf dist && tsc && rollup -c",
-    "lint": "prettier . --write && eslint \"**/*.{js,vue}\" --fix",
-    "lint:check": "prettier . --check && eslint \"**/*.{js,vue}\""
+    "format": "prettier . --write && eslint \"**/*.{js,vue}\" --fix",
+    "format:check": "prettier . --check && eslint \"**/*.{js,vue}\""
   },
   "dependencies": {},
   "devDependencies": {
