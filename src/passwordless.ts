@@ -259,7 +259,7 @@ export class Client {
             this.handleAbort();
 
             if (!stepup.signinMethod) {
-                throw new Error("You need to provide the signInMethod");
+                throw new Error("You need to provide the signinMethod");
             }
 
             if (!stepup.purpose) {
