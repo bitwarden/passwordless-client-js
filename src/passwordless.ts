@@ -4,6 +4,7 @@ import {
     RegisterBeginResponse,
     SigninBeginResponse,
     SigninMethod,
+    StepupRequest,
     TokenResponse
 } from './types';
 
@@ -19,7 +20,7 @@ export class Client {
         apiUrl: 'https://v4.passwordless.dev',
         apiKey: '',
         origin: window.location.origin,
-        rpid: window.location.hostname
+        rpid: window.location.hostname,
     };
     private abortController: AbortController = new AbortController();
 
@@ -147,7 +148,7 @@ export class Client {
             body: JSON.stringify({
                 token,
                 RPID: this.config.rpid,
-                Origin: this.config.origin
+                Origin: this.config.origin,
             }),
         });
 
@@ -221,11 +222,6 @@ export class Client {
                 return signin;
             }
 
-            signin.data.challenge = base64UrlToArrayBuffer(signin.data.challenge);
-            signin.data.allowCredentials?.forEach((cred) => {
-                cred.id = base64UrlToArrayBuffer(cred.id);
-            });
-
             const credential = await navigator.credentials.get({
                 publicKey: signin.data,
                 mediation: 'autofill' in signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditational' yet
@@ -249,7 +245,55 @@ export class Client {
         }
     }
 
-    private async signinBegin(signinMethod: SigninMethod): PromiseResult<SigninBeginResponse> {
+    /**
+     * Performs a step-up authentication process. This is essentially an overload for the sign-in workflow. It allows for
+     * a user authentication to be given a purpose or context for the sign-in, enabling a "step-up" authentication flow.
+     *
+     * @param {StepupRequest} stepup - The step-up request object. This includes the sign-in method and the purpose of the authentication
+     *
+     * @returns {token} - The result of the step-up sign-in process.
+     */
+    public async stepup(stepup: StepupRequest) : PromiseResult<TokenResponse> {
+        try {
+            this.assertBrowserSupported();
+            this.handleAbort();
+
+            if (!stepup.signinMethod) {
+                throw new Error("You need to provide the signinMethod");
+            }
+
+            if (!stepup.purpose) {
+                stepup.purpose = "step-up";
+            }
+
+            const signin = await this.signinBegin(stepup.signinMethod, stepup.purpose);
+
+            if (signin.error) {
+                return signin;
+            }
+
+            const credential = await navigator.credentials.get({
+                publicKey: signin.data,
+                mediation: 'autofill' in stepup.signinMethod ? "conditional" as CredentialMediationRequirement : undefined, // Typescript doesn't know about 'conditional' yet
+                signal: this.abortController.signal,
+            }) as PublicKeyCredential;
+
+            return await this.signinComplete(credential, signin.session);
+        } catch (caughtError: any) {
+            const errorMessage = getErrorMessage(caughtError);
+            const error = {
+                from: "client",
+                errorCode: "unknown",
+                title: errorMessage,
+            };
+            console.error(caughtError);
+            console.error(error);
+
+            return { error };
+        }
+    }
+
+    private async signinBegin(signinMethod: SigninMethod, purpose?: string): PromiseResult<SigninBeginResponse> {
         const response = await fetch(`${this.config.apiUrl}/signin/begin`, {
             method: 'POST',
             headers: this.createHeaders(),
@@ -258,12 +302,22 @@ export class Client {
                 alias: "alias" in signinMethod ? signinMethod.alias : undefined,
                 RPID: this.config.rpid,
                 Origin: this.config.origin,
+                purpose: purpose
             }),
         });
 
         const res = await response.json();
         if (response.ok) {
-            return res;
+            return {
+                ...res,
+                data: {
+                    ...res.data,
+                    challenge: base64UrlToArrayBuffer(res.data.challenge),
+                    allowCredentials: res.data.allowCredentials?.map((cred: PublicKeyCredentialDescriptor) => {
+                        return { ...cred, id: base64UrlToArrayBuffer(cred.id) };
+                    })
+                }
+            };
         }
 
         return { error: { ...res, from: "server" } };
