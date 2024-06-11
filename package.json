@@ -9,29 +9,36 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/passwordless/passwordless-client-js.git"
+    "url": "git+https://github.com/bitwarden/passwordless-client-js.git"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "homepage": "https://github.com/bitwarden/passwordless-client-js#readme",
+  "description": "This library allows you to to easily add passwordless sign in (using fido2/webauthn) to your web application.",
+  "bugs": {
+    "url": "https://github.com/bitwarden/passwordless-client-js/issues"
   },
   "contributors": [
     "Anders Åberg",
     "David Fant"
   ],
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "rimraf dist && tsc && rollup -c",
+    "format": "prettier . --write && eslint \"**/*.{js,vue}\" --fix",
+    "format:check": "prettier . --check && eslint \"**/*.{js,vue}\""
+  },
+  "dependencies": {},
   "devDependencies": {
+    "@eslint/js": "^9.4.0",
     "@rollup/plugin-typescript": "11.1.6",
+    "eslint": "^9.4.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.1",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "rimraf": "5.0.5",
     "rollup": "2.55.1",
     "rollup-plugin-terser": "7.0.2",
     "tslib": "2.3.0",
     "typescript": "5.4.5"
-  },
-  "scripts": {
-    "dev": "tsc -w",
-    "build": "rimraf dist && tsc && rollup -c",
-    "prepublishOnly": "echo prePublishOnly"
-  },
-  "description": "This library allows you to to easily add passwordless sign in (using fido2/webauthn) to your web application.",
-  "bugs": {
-    "url": "https://github.com/passwordless/passwordless-client-js/issues"
-  },
-  "homepage": "https://github.com/passwordless/passwordless-client-js#readme",
-  "license": "SEE LICENSE IN LICENSE.txt"
+  }
 }
