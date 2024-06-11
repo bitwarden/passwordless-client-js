@@ -55,7 +55,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
         with:
-          name: '@passwordlessdev-passwordless-client'
+          name: packages
           path: |
             dist
             package.json
@@ -68,4 +68,4 @@ jobs:
           --repo bitwarden/passwordless-devops
           --field repository=${{ github.repository }}
           --field run-id=${{ github.run_id }}
-          --field name=@passwordlessdev-passwordless-client
+          --field name=packages
