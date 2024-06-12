@@ -42,7 +42,6 @@ Install the Passwordless.dev JS client:
   src="https://cdn.passwordless.dev/dist/1.1.0/passwordless.iife.js"
   crossorigin="anonymous"
 ></script>
-`
 ```
 
 Next, your front end must import the libary to call the methods:
