@@ -69,8 +69,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOYMENT_GITHUB_TOKEN }}
         run: >
-          gh workflow run passwordless-client-js
+          gh workflow run deploy-passwordless-client-js
           --repo bitwarden/passwordless-devops
           --field repository=${{ github.repository }}
           --field run-id=${{ github.run_id }}
-          --field name=packages
+          --field artifact=packages
+          --field environment=npm
+          --field version=${{ github.event.release.tag_name }}
