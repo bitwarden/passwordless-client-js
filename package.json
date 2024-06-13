@@ -35,7 +35,7 @@
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.3.1",
     "prettier-plugin-organize-imports": "^3.2.4",
-    "rimraf": "5.0.5",
+    "rimraf": "5.0.7",
     "rollup": "2.55.1",
     "rollup-plugin-terser": "7.0.2",
     "tslib": "2.3.0",
