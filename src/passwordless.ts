@@ -22,10 +22,14 @@ export class Client {
     origin: window.location.origin,
     rpid: window.location.hostname
   };
+
+  private readonly clientVersion: string = 'js-1.1.0';
+
   private abortController: AbortController = new AbortController();
 
-  constructor(config: AtLeast<Config, 'apiKey'>) {
+  constructor(config: AtLeast<Config, 'apiKey'>, clientVersion?: string) {
     Object.assign(this.config, config);
+    this.clientVersion = clientVersion ?? this.clientVersion;
   }
 
   /**
@@ -378,8 +382,26 @@ export class Client {
     return {
       'ApiKey': this.config.apiKey,
       'Content-Type': 'application/json',
-      'Client-Version': 'js-1.1.0'
+      'Client-Version': this.clientVersion
     };
+  }
+}
+
+export class ClientBuilder {
+  private readonly config: Config;
+  private clientVersion?: string;
+
+  constructor(config: Config) {
+    this.config = config;
+  }
+
+  withClientVersion(clientVersion: string): ClientBuilder {
+    this.clientVersion = clientVersion;
+    return this;
+  }
+
+  build(): Client {
+    return new Client(this.config, this.clientVersion);
   }
 }
 
