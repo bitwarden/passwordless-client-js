@@ -393,7 +393,9 @@ export class Client {
   public set clientVersion(value: string) {
     const versionPattern = /^[a-z]+-\d+\.\d+\.\d+$/;
     if (!versionPattern.test(value)) {
-      throw new Error("Invalid `Client-Version` format. Expected format is 'prefix-x.x.x' where prefix is a lowercase string.");
+      throw new Error(
+        "Invalid `Client-Version` format. Expected format is 'prefix-x.x.x' where prefix is a lowercase string."
+      );
     }
     this._clientVersion = value;
   }
