@@ -397,6 +397,13 @@ export class Client {
     }
     this._clientVersion = value;
   }
+
+  /**
+   * Gets the `Client-Version` header for client SDK implementations based off the Javascript Client SDK.
+   */
+  public get clientVersion(): string {
+    return this._clientVersion;
+  }
 }
 
 export async function isPlatformSupported(): Promise<boolean> {
