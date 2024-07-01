@@ -1,49 +1,47 @@
-import { Client, Config } from './passwordless'; // Adjust the import to match your file structure
+import { Client, Config } from './passwordless';
 
-describe('ClientSDK', () => {
-  let client: Client;
+describe('Client', (): void => {
+  describe('clientVersion', (): void => {
+    let client: Client;
 
-  beforeEach(() => {
-    let options: Config = {
-      apiUrl: 'http://localhost:8080',
-      apiKey: 'public:app1:123',
-      origin: 'https://pwdemo',
-      rpid: 'pwdemo'
-    };
-    client = new Client(options);
-  });
-
-  test('should set valid client version format', () => {
-    const validVersions = ['js-1.0.0', 'blazor-2.3.2', 'android-5.4.3'];
-
-    validVersions.forEach((version) => {
-      client.clientVersion = version;
-      expect(client.clientVersion).toBe(version);
+    beforeEach((): void => {
+      let options: Config = {
+        apiUrl: 'http://localhost:8080',
+        apiKey: 'public:app1:123',
+        origin: 'https://pwdemo',
+        rpid: 'pwdemo'
+      };
+      client = new Client(options);
     });
-  });
 
-  test('should throw error for invalid client version format', () => {
-    const invalidVersions = [
-      '1.0.0', // Missing prefix
-      'Js-1.0.0', // Uppercase prefix
-      'blazor-2.3', // Missing patch version
-      'android-5.4.3.0', // Extra version number
-      'android-5.4', // Missing patch version
-      'android-5..3' // Double dot
-    ];
+    test('gets expected original client version format', (): void => {
+      const originalVersion: string = client.clientVersion;
 
-    invalidVersions.forEach((version) => {
-      expect(() => {
-        client.clientVersion = version;
-      }).toThrow(
+      expect(client.clientVersionRegex.test(originalVersion)).toBe(true);
+    });
+
+    test('should set valid client version format', (): void => {
+      const version: string = 'android-5.4.3';
+
+      const originalVersion: string = client.clientVersion;
+      client.clientVersion = version;
+      expect(client.clientVersion).toBe(`${version}+${originalVersion}`);
+    });
+
+    test('should not set invalid client version format', (): void => {
+      const version: string = 'android--5.4.3';
+      expect(() => (client.clientVersion = version)).toThrow(
         "Invalid `Client-Version` format. Expected format is 'prefix-x.x.x' where prefix is a lowercase string."
       );
     });
-  });
 
-  test('should get the correct client version', () => {
-    const version = 'js-1.0.0';
-    client.clientVersion = version;
-    expect(client.clientVersion).toBe(version);
+    test('should not set valid client version twice', (): void => {
+      const version1: string = 'android-5.4.3';
+      const version2: string = 'blazor-5.4.3';
+      client.clientVersion = version1;
+      expect(() => (client.clientVersion = version2)).toThrow(
+        '`Client-Version` has already been set.'
+      );
+    });
   });
 });

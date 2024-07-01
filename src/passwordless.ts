@@ -385,19 +385,25 @@ export class Client {
     };
   }
 
+  public get clientVersionRegex(): RegExp {
+    return /^[a-z]+-\d+\.\d+\.\d+$/;
+  }
+
   /**
    * Sets the `Client-Version` header for client SDK implementations based off the Javascript Client SDK.
    * @param {string} value The new `Client-Version` header value.
    * @remarks Do not set this property when integrating the client SDK.
    */
   public set clientVersion(value: string) {
-    const versionPattern = /^[a-z]+-\d+\.\d+\.\d+$/;
-    if (!versionPattern.test(value)) {
+    if (!this.clientVersionRegex.test(this.clientVersion)) {
+      throw new Error('`Client-Version` has already been set.');
+    }
+    if (!this.clientVersionRegex.test(value)) {
       throw new Error(
         "Invalid `Client-Version` format. Expected format is 'prefix-x.x.x' where prefix is a lowercase string."
       );
     }
-    this._clientVersion = value;
+    this._clientVersion = `${value}+${this.clientVersion}`;
   }
 
   /**
