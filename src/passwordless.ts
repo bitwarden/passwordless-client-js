@@ -390,8 +390,11 @@ export class Client {
   }
 
   /**
-   * Sets the `Client-Version` header for client SDK implementations based off the Javascript Client SDK.
+   * (Internal use only) Sets the `Client-Version` header for client SDK implementations based off the Javascript Client SDK. By setting the
+   * property, the parameter will be prepended.
    * @param {string} value The new `Client-Version` header value.
+   * @throws {Error} Throws an error if the `Client-Version` has already been set.
+   * @throws {Error} Throws an error if the `Client-Version` format is invalid. Expected format is 'prefix-x.x.x' where prefix is a lowercase string.
    * @remarks Do not set this property when integrating the client SDK.
    */
   public set clientVersion(value: string) {
