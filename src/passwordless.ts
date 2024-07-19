@@ -22,6 +22,9 @@ export class Client {
     origin: window.location.origin,
     rpid: window.location.hostname
   };
+
+  private _clientVersion: string = 'js-1.1.0';
+
   private abortController: AbortController = new AbortController();
 
   constructor(config: AtLeast<Config, 'apiKey'>) {
@@ -378,8 +381,39 @@ export class Client {
     return {
       'ApiKey': this.config.apiKey,
       'Content-Type': 'application/json',
-      'Client-Version': 'js-1.1.0'
+      'Client-Version': this._clientVersion
     };
+  }
+
+  public get clientVersionRegex(): RegExp {
+    return /^[a-z]+-\d+\.\d+\.\d+$/;
+  }
+
+  /**
+   * (Internal use only) Sets the `Client-Version` header for client SDK implementations based off the Javascript Client SDK. By setting the
+   * property, the parameter will be prepended.
+   * @param {string} value The new `Client-Version` header value.
+   * @throws {Error} Throws an error if the `Client-Version` has already been set.
+   * @throws {Error} Throws an error if the `Client-Version` format is invalid. Expected format is 'prefix-x.x.x' where prefix is a lowercase string.
+   * @remarks Do not set this property when integrating the client SDK.
+   */
+  public set clientVersion(value: string) {
+    if (!this.clientVersionRegex.test(this.clientVersion)) {
+      throw new Error('`Client-Version` has already been set.');
+    }
+    if (!this.clientVersionRegex.test(value)) {
+      throw new Error(
+        "Invalid `Client-Version` format. Expected format is 'prefix-x.x.x' where prefix is a lowercase string."
+      );
+    }
+    this._clientVersion = `${value}+${this.clientVersion}`;
+  }
+
+  /**
+   * Gets the `Client-Version` header for client SDK implementations based off the Javascript Client SDK.
+   */
+  public get clientVersion(): string {
+    return this._clientVersion;
   }
 }
 
