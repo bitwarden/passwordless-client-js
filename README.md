@@ -62,7 +62,7 @@ const p = new Passwordless.Client({
 
 // Fetch the registration token from the backend.
 const backendUrl = 'https://localhost:8002';
-const registerToken = await fetch(backendUrl + '/create-token?userId' + userId).then((r) =>
+const registerToken = await fetch(backendUrl + '/create-token?userId=' + userId).then((r) =>
   r.json()
 );
 
