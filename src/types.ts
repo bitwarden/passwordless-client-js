@@ -1,5 +1,10 @@
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
+export type RegisterOptions = {
+  credentialNickname?: string;
+  authenticatorDisplayName?: string;
+};
+
 /**
  * Represents a sign-in method.
  */
