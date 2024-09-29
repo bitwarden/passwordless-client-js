@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": "src"
   },
   "include": ["**/*.ts"]
 }
