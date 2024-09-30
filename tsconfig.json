@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "strict": true,
     "target": "es2018",
     "module": "esnext",
@@ -11,8 +10,7 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "rootDir": "src",
-    "outDir": "dist"
+    "rootDir": "src"
   },
   "include": ["**/*.ts"]
 }
