@@ -1,5 +1,6 @@
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import dts from "rollup-plugin-dts";
 
 const createPlugins = (compact) => (compact ? [terser()] : []);
 
@@ -37,9 +38,17 @@ const cjs = (compact) => ({
   plugins: createPlugins(compact)
 });
 
-export default {
+const definitions = () => ({
+  file: "dist/types/passwordless.d.ts",
+  format: "es",
+    plugins: [dts()],
+  });
+
+export default [{
   input: 'src/passwordless.ts',
-  plugins: [typescript()],
+  plugins: [
+    typescript()
+  ],
   output: [
     iife(false),
     iife(true),
@@ -48,6 +57,13 @@ export default {
     umd(false),
     umd(true),
     cjs(false),
-    cjs(true)
+    cjs(true),
+    definitions()
   ]
-};
+},{
+  input: 'src/types.ts',
+  plugins: [dts()],
+  output: {
+    file: "dist/types.d.ts"
+  }
+}];
