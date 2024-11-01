@@ -1,6 +1,6 @@
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import dts from "rollup-plugin-dts";
+import dts from 'rollup-plugin-dts';
 
 const createPlugins = (compact) => (compact ? [terser()] : []);
 
