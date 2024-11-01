@@ -38,12 +38,6 @@ const cjs = (compact) => ({
   plugins: createPlugins(compact)
 });
 
-const definitions = () => ({
-  file: "dist/types/passwordless.d.ts",
-  format: "es",
-    plugins: [dts()],
-  });
-
 export default [{
   input: 'src/passwordless.ts',
   plugins: [
@@ -57,8 +51,7 @@ export default [{
     umd(false),
     umd(true),
     cjs(false),
-    cjs(true),
-    definitions()
+    cjs(true)
   ]
 },{
   input: 'src/types.ts',
