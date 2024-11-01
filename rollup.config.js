@@ -38,25 +38,26 @@ const cjs = (compact) => ({
   plugins: createPlugins(compact)
 });
 
-export default [{
-  input: 'src/passwordless.ts',
-  plugins: [
-    typescript()
-  ],
-  output: [
-    iife(false),
-    iife(true),
-    es6(false),
-    es6(true),
-    umd(false),
-    umd(true),
-    cjs(false),
-    cjs(true)
-  ]
-},{
-  input: 'src/types.ts',
-  plugins: [dts()],
-  output: {
-    file: "dist/types.d.ts"
+export default [
+  {
+    input: 'src/passwordless.ts',
+    plugins: [typescript()],
+    output: [
+      iife(false),
+      iife(true),
+      es6(false),
+      es6(true),
+      umd(false),
+      umd(true),
+      cjs(false),
+      cjs(true)
+    ]
+  },
+  {
+    input: 'src/types.ts',
+    plugins: [dts()],
+    output: {
+      file: 'dist/types.d.ts'
+    }
   }
-}];
+];
