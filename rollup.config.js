@@ -57,7 +57,7 @@ export default [
     input: 'src/types.ts',
     plugins: [dts()],
     output: {
-      file: 'dist/types.d.ts'
+      file: 'dist/passwordless.d.ts'
     }
   }
 ];
