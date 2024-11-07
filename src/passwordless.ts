@@ -8,6 +8,8 @@ import {
   TokenResponse
 } from './types';
 
+export * from './types';
+
 export interface Config {
   apiUrl: string;
   apiKey: string;
