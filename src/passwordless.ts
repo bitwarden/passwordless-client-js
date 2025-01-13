@@ -444,7 +444,7 @@ function base64UrlToBase64(base64Url: string): string {
   return base64Url.replace(/-/g, '+').replace(/_/g, '/');
 }
 
-function base64UrlToArrayBuffer(base64UrlString: string | BufferSource): ArrayBuffer {
+function base64UrlToArrayBuffer(base64UrlString: string | BufferSource): Uint8Array<ArrayBuffer> {
   // improvement: Remove BufferSource-type and add proper types upstream
   if (typeof base64UrlString !== 'string') {
     const msg = 'Cannot convert from Base64Url to ArrayBuffer: Input was not of type string';
