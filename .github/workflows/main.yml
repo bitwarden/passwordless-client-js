@@ -73,6 +73,8 @@ jobs:
         with:
           app-id: ${{ secrets.BW_GHAPP_ID }}
           private-key: ${{ secrets.BW_GHAPP_KEY }}
+          owner: bitwarden
+          repositories: passwordless-devops
 
       - name: Dispatch deployment
         env:
