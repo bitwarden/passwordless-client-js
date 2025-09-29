@@ -183,7 +183,8 @@ export class Client {
           clientExtensionResults: credential.getClientExtensionResults(),
           response: {
             AttestationObject: arrayBufferToBase64Url(attestationResponse.attestationObject),
-            clientDataJson: arrayBufferToBase64Url(attestationResponse.clientDataJSON)
+            clientDataJson: arrayBufferToBase64Url(attestationResponse.clientDataJSON),
+            transports: attestationResponse.getTransports ? attestationResponse.getTransports() : [] // we might need to provide a default here if the browser doesn't support the call.
           }
         },
         nickname: credentialNickname,
