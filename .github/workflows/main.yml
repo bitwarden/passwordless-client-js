@@ -98,7 +98,7 @@ jobs:
           private-key: ${{ steps.get-kv-secrets.outputs.BW-GHAPP-KEY }}
           owner: bitwarden
           repositories: passwordless-devops
-          permission-actions: write  # for running workflows in different repositories
+          permission-actions: write # for running workflows in different repositories
 
       - name: Dispatch deployment
         env:
