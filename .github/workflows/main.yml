@@ -11,6 +11,8 @@ on:
     types:
       - published
 
+permissions: {}
+
 jobs:
   format:
     name: Format
@@ -43,7 +45,6 @@ jobs:
     runs-on: ubuntu-24.04
 
     permissions:
-      actions: write
       contents: read
       id-token: write
 
@@ -97,6 +98,7 @@ jobs:
           private-key: ${{ steps.get-kv-secrets.outputs.BW-GHAPP-KEY }}
           owner: bitwarden
           repositories: passwordless-devops
+          permission-actions: write  # for running workflows in different repositories
 
       - name: Dispatch deployment
         env:
