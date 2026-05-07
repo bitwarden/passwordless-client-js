@@ -1,0 +1,32 @@
+{
+  "name": "passwordless-client-js-simple-example",
+  "version": "1.0.0",
+  "description": "Example app that exercises the local @passwordlessdev/passwordless-client build end-to-end.",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/src/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@passwordlessdev/passwordless-nodejs": "^1.0.1",
+    "@types/dotenv": "^8.2.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.17",
+    "@types/node": "^16.18.38",
+    "@types/uuid": "^9.0.2",
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.1.6"
+  }
+}
