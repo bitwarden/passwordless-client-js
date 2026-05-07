@@ -1,46 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Passwordless Client-JS</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
     <style>
-        body {
-            font-family: sans-serif;
-        }
+      body {
+        font-family: sans-serif;
+      }
     </style>
-</head>
-<body>
-<main class="container">
-    <h2>Bitwarden Passwordless.dev - Client-JS (local build)</h2>
-    <p>This example loads the SDK from <code>/passwordless-client-js/iife/passwordless.iife.js</code>, which is served
-        straight from this repo's <code>dist/</code> output. Run <code>npm run build</code> at the repo root before
-        starting the example so the bundle exists.</p>
-    <p>To run this example you must first add your API key in <code>index.html</code> and your API Secret in
-        <code>.env</code>.</p>
-    <p><a href="https://docs.passwordless.dev/">Documentation</a> - <a
-            href="https://admin.passwordless.dev/signup">Get your API keys</a></p>
+  </head>
+  <body>
+    <main class="container">
+      <h2>Bitwarden Passwordless.dev - Client-JS (local build)</h2>
+      <p>
+        This example loads the SDK from
+        <code>/passwordless-client-js/iife/passwordless.iife.js</code>, which is served straight
+        from this repo's <code>dist/</code> output. Run <code>npm run build</code> at the repo root
+        before starting the example so the bundle exists.
+      </p>
+      <p>
+        To run this example you must first add your API key in <code>index.html</code> and your API
+        Secret in <code>.env</code>.
+      </p>
+      <p>
+        <a href="https://docs.passwordless.dev/">Documentation</a> -
+        <a href="https://admin.passwordless.dev/signup">Get your API keys</a>
+      </p>
 
-    <strong>Username</strong>
-    <input type="text" id="username" placeholder="Username, Email etc"/>
+      <strong>Username</strong>
+      <input type="text" id="username" placeholder="Username, Email etc" />
 
-    <strong>Alias:</strong>
-    <input type="text" id="alias" placeholder="Username, Email etc"/>
-    <button id="passwordless-register">Register</button>
-    <button id="passwordless-signin">Login</button>
-    <pre id="status"></pre>
-
-</main>
-<script>
-    const API_KEY = "sdktester:public:a7239bb514e6427a81fea1c01bf4bab0"; // Replace this value with your API Key
-    const YOUR_BACKEND_URL = "http://localhost:5024"; // Where this node.js app is running. This is where your own backend lives.
-    const PASSWORDLESS_API_URL = "http://localhost:7001";  // optional parameter, defaults to 'https://v4.passwordless.dev' if not set. Only set this for self-hosting
-</script>
-<script src="debug.js"></script>
-<script src="/passwordless-client-js/iife/passwordless.iife.js"></script>
-<script src="client-register.js"></script>
-<script src="client-signin.js"></script>
-</body>
+      <strong>Alias:</strong>
+      <input type="text" id="alias" placeholder="Username, Email etc" />
+      <button id="passwordless-register">Register</button>
+      <button id="passwordless-signin">Login</button>
+      <pre id="status"></pre>
+    </main>
+    <script>
+      const API_KEY = 'sdktester:public:a7239bb514e6427a81fea1c01bf4bab0'; // Replace this value with your API Key
+      const YOUR_BACKEND_URL = 'http://localhost:5024'; // Where this node.js app is running. This is where your own backend lives.
+      const PASSWORDLESS_API_URL = 'http://localhost:7001'; // optional parameter, defaults to 'https://v4.passwordless.dev' if not set. Only set this for self-hosting
+    </script>
+    <script src="debug.js"></script>
+    <script src="/passwordless-client-js/iife/passwordless.iife.js"></script>
+    <script src="client-register.js"></script>
+    <script src="client-signin.js"></script>
+  </body>
 </html>

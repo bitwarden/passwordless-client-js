@@ -1,5 +1,4 @@
-
 export default interface SignupRequest {
-    username: string;
-    alias: string;
+  username: string;
+  alias: string;
 }
