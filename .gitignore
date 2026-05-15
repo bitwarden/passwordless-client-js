@@ -3,3 +3,4 @@ dist
 .vscode
 .DS_STORE
 .idea
+src/**/*.js

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.vscode
+.idea
+*.db
+package-lock.json
+src/**/*.js
